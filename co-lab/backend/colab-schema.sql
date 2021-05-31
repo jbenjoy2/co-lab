@@ -23,6 +23,7 @@ CREATE TABLE projects
 
 CREATE TABLE requests
 (
+    id SERIAL PRIMARY KEY,
     project_id INT REFERENCES projects ON DELETE CASCADE,
     sender VARCHAR
     (25) REFERENCES users ON
@@ -32,8 +33,8 @@ CREATE TABLE requests
     DELETE CASCADE,
     accepted BOOLEAN,
     sent_at TIMESTAMP
-        DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (sender, recipient)
+        DEFAULT CURRENT_TIMESTAMP
+
 );
 
 CREATE TABLE cowrites

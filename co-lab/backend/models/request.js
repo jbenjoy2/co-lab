@@ -24,7 +24,20 @@ class Request {
     return query.rows;
   }
 
-  static async makeRequest(sender, recipient, project_id) {
+  static async makeRequest(project_id, sender, recipient) {
+    const dupCheck = await db.query(
+      `
+        SELECT id, accepted 
+        FROM requests 
+        WHERE project_id=$1 AND sender=$2 AND recipient=$3 AND accepted IS null`,
+      [project_id, sender, recipient]
+    );
+    const dupRequest = dupCheck.rows[0];
+    if (dupRequest) {
+      throw new BadRequestError("Request is already pending");
+      return;
+    }
+
     const query = await db.query(
       `
         INSERT INTO requests (project_id, sender, recipient)
@@ -35,7 +48,6 @@ class Request {
     );
 
     const request = query.rows[0];
-
     request["sentAt"] = moment(request["sentAt"])
       .local()
       .format("M-DD-YYYY at h:mmA");
