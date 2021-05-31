@@ -4,6 +4,7 @@
 const db = require("../db");
 const bcrypt = require("bcrypt");
 const { NotFoundError, BadRequestError, UnauthorizedError } = require("../expressError");
+const moment = require("moment");
 
 const { BCRYPT_WORK_FACTOR } = require("../config.js");
 
@@ -43,6 +44,7 @@ class User {
     }
 
     // hash password to save to database
+    console.log(username, password);
     const hashedPW = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
     const addToDB = await db.query(
@@ -60,4 +62,100 @@ class User {
     const user = addToDB.rows[0];
     return user;
   }
+
+  //   find all users, with optional searchterms of firstName, lastName, and username which will all be case insensitive
+  static async findAll(searchOptions = {}) {
+    let sql = `SELECT username,
+                    first_name as "firstName",
+                    last_name as "lastName",
+                    email,
+                    image_url as "imageURL"
+                FROM users `;
+
+    const { firstName, lastName, username } = searchOptions;
+    let whereExpressions = [];
+    let queryValues = [];
+
+    if (firstName !== undefined) {
+      queryValues.push(`%${firstName}%`);
+      whereExpressions.push(`first_name ILIKE $${queryValues.length}`);
+    }
+    if (lastName !== undefined) {
+      queryValues.push(`%${lastName}%`);
+      whereExpressions.push(`last_name ILIKE $${queryValues.length}`);
+    }
+    if (username !== undefined) {
+      queryValues.push(`%${username}%`);
+      whereExpressions.push(`username ILIKE $${queryValues.length}`);
+    }
+
+    // add WHERE clause to query
+    if (whereExpressions.length > 0) {
+      const wheres = whereExpressions.join(" AND ");
+      sql += ` WHERE ${wheres} `;
+    }
+
+    // order by username;
+    sql += "ORDER BY username";
+    try {
+      const usersResults = await db.query(sql, queryValues);
+      return usersResults.rows;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  //   find data about user given their username
+  static async getUser(username) {
+    const userRes = await db.query(
+      `Select username,
+                  first_name AS "firstName",
+                  last_name AS "lastName",
+                  email,
+                  image_url AS "imageURL"
+            FROM users
+            WHERE username = $1`,
+      [username]
+    );
+
+    const foundUser = userRes.rows[0];
+    if (!foundUser) throw new NotFoundError(`User with username ${username} not found`);
+    const projectsRes = await db.query(
+      `Select p.id,
+              p.updated_at AS "updatedAt",
+              p.title AS "title",
+              c.is_owner
+        FROM projects AS p
+        INNER JOIN cowrites AS c
+        ON p.id = c.project_id
+            WHERE c.username = $1`,
+      [username]
+    );
+
+    // ADJUST DISPLAY OF UPDATED TIME TO BE LOCAL TIMEZONE
+    projectsRes.rows.forEach(r => {
+      let updated = r["updatedAt"];
+      r["updatedAt"] = moment(updated)
+        .local()
+        .format("M-DD-YYYY h:mmA");
+    });
+    foundUser.projects = projectsRes.rows;
+    return foundUser;
+  }
+
+  static async remove(username) {
+    const qry = await db.query(
+      `
+      DELETE FROM users 
+      WHERE username = $1 
+      RETURNING username`,
+      [username]
+    );
+
+    const user = qry.rows[0];
+
+    if (!user) throw new NotFoundError(`User with username: ${username} not found!`);
+  }
 }
+
+module.exports = User;

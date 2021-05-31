@@ -1,10 +1,15 @@
 const express = require("express");
 const cors = require("cors");
-const ExpressError = require("./expressError");
+const { ExpressError } = require("./expressError");
 const app = express();
-
+const userRoutes = require("./routes/users");
+const requestsRoutes = require("./routes/requests");
 app.use(cors());
 app.use(express.json());
+
+app.use("/users", userRoutes);
+app.use("/requests", requestsRoutes);
+
 // 404 error handler
 app.use((req, res, next) => {
   const err = new ExpressError("Not found", 404);

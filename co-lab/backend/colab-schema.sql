@@ -9,15 +9,7 @@ CREATE TABLE users
     image_url TEXT
 );
 
-CREATE TABLE requests
-(
-    id SERIAL PRIMARY KEY,
-    sender VARCHAR(25) REFERENCES users ON DELETE CASCADE,
-    recipient VARCHAR(25) REFERENCES users ON DELETE CASCADE,
-    accepted BOOLEAN,
-    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
-);
 
 CREATE TABLE projects
 (
@@ -27,6 +19,21 @@ CREATE TABLE projects
     title VARCHAR(25) NOT NULL,
     notes TEXT,
     owner VARCHAR(25) REFERENCES users ON DELETE CASCADE
+);
+
+CREATE TABLE requests
+(
+    project_id INT REFERENCES projects ON DELETE CASCADE,
+    sender VARCHAR
+    (25) REFERENCES users ON
+    DELETE CASCADE,
+    recipient VARCHAR(25)
+        REFERENCES users ON
+    DELETE CASCADE,
+    accepted BOOLEAN,
+    sent_at TIMESTAMP
+        DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (sender, recipient)
 );
 
 CREATE TABLE cowrites
