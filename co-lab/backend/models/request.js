@@ -29,7 +29,7 @@ class Request {
       `
         SELECT id, accepted 
         FROM requests 
-        WHERE project_id=$1 AND sender=$2 AND recipient=$3 AND accepted IS null`,
+        WHERE project_id=$1 AND sender=$2 AND recipient=$3 AND accepted IS null OR accepted IS true`,
       [project_id, sender, recipient]
     );
     const dupRequest = dupCheck.rows[0];
@@ -52,6 +52,70 @@ class Request {
       .local()
       .format("M-DD-YYYY at h:mmA");
     return request;
+  }
+
+  static async accept(requestId) {
+    const statusCheck = await db.query(`SELECT accepted FROM requests WHERE id=$1`, [requestId]);
+
+    const status = statusCheck.rows[0];
+
+    if (status.accepted !== null) {
+      throw new BadRequestError("This request has already been resolved");
+      return;
+    }
+    const qry = await db.query(
+      `
+        UPDATE requests
+        SET accepted=TRUE
+        WHERE id=$1
+        RETURNING id, project_id, sender, recipient, accepted
+      `,
+      [requestId]
+    );
+
+    const result = qry.rows[0];
+
+    if (!result) {
+      throw new NotFoundError(`Request not found and could not be accepted`);
+      return;
+    }
+    // insert new collaborations into cowrites using returned projectID, sender, recipient;
+    const { project_id, sender, recipient } = result;
+    const insert = await db.query(
+      `
+        INSERT INTO cowrites(project_id, username, is_owner)
+        VALUES
+        ($1, $2, true),
+        ($3, $4, false)
+        RETURNING id
+    `,
+      [project_id, sender, project_id, recipient]
+    );
+
+    const insertRes = insert.rows[0];
+    if (!insertRes) {
+      throw new BadRequestError("Collaboration could not be made. Please try again");
+      return;
+    }
+    return result;
+  }
+
+  static async reject(requestId) {
+    const qry = await db.query(
+      `
+        UPDATE requests
+        SET accepted=false
+        WHERE id=$1
+        RETURNING project_id, sender, recipient
+      `,
+      [requestId]
+    );
+    const result = qry.rows[0];
+    if (!result) {
+      throw new NotFoundError(`Request not found and could not be rejected`);
+      return;
+    }
+    return result;
   }
 }
 
