@@ -5,9 +5,22 @@ const Request = require("../models/request");
 
 const router = new express.Router();
 
+router.get("/:username", async (req, res, next) => {
+  const recipient = req.params.username;
+
+  try {
+    const userRequests = await Request.getRequestsForUser(recipient);
+
+    if (!userRequests.length) {
+      return res.json("No requests!");
+    }
+    return res.json({ userRequests });
+  } catch (error) {
+    return next(error);
+  }
+});
 router.post("/new", async (req, res, next) => {
   const { project_id, sender, recipient } = req.body;
-  console.log(project_id, sender, recipient);
   try {
     const newRequest = await Request.makeRequest(project_id, sender, recipient);
 

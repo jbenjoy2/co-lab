@@ -1,12 +1,22 @@
 const db = require("../db");
 const { NotFoundError, BadRequestError, UnauthorizedError } = require("../expressError");
 const moment = require("moment");
+const { user } = require("../db");
 
 class Request {
   static async getRequestsForUser(username) {
+    // check for invalid user
+    const userCheck = await db.query(`SELECT username FROM users WHERE username=$1`, [username]);
+
+    const user = userCheck.rows[0];
+
+    if (!user) {
+      throw new NotFoundError(`User with username: ${username} not found`);
+      return;
+    }
     const query = await db.query(
       `
-            SELECT sender, 
+            SELECT id AS "requestID", sender, 
             sent_at AS "sentAt"
             FROM requests
             WHERE recipient = $1`,
@@ -32,9 +42,9 @@ class Request {
         WHERE project_id=$1 AND sender=$2 AND recipient=$3 AND (accepted IS null OR accepted IS true)`,
       [project_id, sender, recipient]
     );
-    console.log(project_id, sender, recipient);
+
     const dupRequest = dupCheck.rows[0];
-    console.log(dupCheck);
+
     if (dupRequest) {
       throw new BadRequestError("Request is already pending");
       return;
@@ -81,17 +91,16 @@ class Request {
       throw new NotFoundError(`Request not found and could not be accepted`);
       return;
     }
-    // insert new collaborations into cowrites using returned projectID, sender, recipient;
+    // insert new collaborations into cowrites using returned projectID, recipient; owner will already exist in table
     const { project_id, sender, recipient } = result;
     const insert = await db.query(
       `
         INSERT INTO cowrites(project_id, username, is_owner)
         VALUES
-        ($1, $2, true),
-        ($3, $4, false)
+        ($1, $2, false)
         RETURNING id
     `,
-      [project_id, sender, project_id, recipient]
+      [project_id, recipient]
     );
 
     const insertRes = insert.rows[0];

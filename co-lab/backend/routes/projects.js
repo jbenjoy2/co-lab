@@ -5,8 +5,6 @@ const Project = require("../models/project");
 
 const router = new express.Router();
 
-module.exports = router;
-
 router.post("/new", async (req, res, next) => {
   const { title, owner } = req.body;
   try {
@@ -27,3 +25,22 @@ router.get("/:id", async (req, res, next) => {
     return next(error);
   }
 });
+
+router.patch("/:id", async (req, res, next) => {
+  try {
+    const proj = await Project.update(req.params.id, req.body);
+    return res.json({ updated: proj });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.delete("/:id", async (req, res, next) => {
+  try {
+    await Project.remove(req.params.id);
+    return res.json({ deleted: req.params.id });
+  } catch (error) {
+    return next(error);
+  }
+});
+module.exports = router;

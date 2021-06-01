@@ -44,7 +44,7 @@ class User {
     }
 
     // hash password to save to database
-    console.log(username, password);
+
     const hashedPW = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
     const addToDB = await db.query(
@@ -124,11 +124,12 @@ class User {
       `Select p.id,
               p.updated_at AS "updatedAt",
               p.title AS "title",
-              c.is_owner
+              c.is_owner AS "owner"
         FROM projects AS p
-        INNER JOIN cowrites AS c
+        LEFT JOIN cowrites AS c
         ON p.id = c.project_id
-            WHERE c.username = $1`,
+            WHERE 
+              c.username = $1`,
       [username]
     );
 
@@ -137,9 +138,13 @@ class User {
       let updated = r["updatedAt"];
       r["updatedAt"] = moment(updated)
         .local()
-        .format("M-DD-YYYY h:mmA");
+        .format("MMM DD, YYYY [at] h:mmA");
+      if (r.is_owner === null) {
+        r.is_owner = true;
+      }
     });
     foundUser.projects = projectsRes.rows;
+
     return foundUser;
   }
 
