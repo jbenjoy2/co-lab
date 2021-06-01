@@ -6,6 +6,7 @@ const userRoutes = require("./routes/users");
 const requestsRoutes = require("./routes/requests");
 const projectsRoutes = require("./routes/projects");
 const cowriteRoutes = require("./routes/cowrites");
+const arrangementsRoutes = require("./routes/arrangements");
 app.use(cors());
 app.use(express.json());
 
@@ -13,6 +14,7 @@ app.use("/users", userRoutes);
 app.use("/requests", requestsRoutes);
 app.use("/projects", projectsRoutes);
 app.use("/cowrites", cowriteRoutes);
+app.use("/arrangements", arrangementsRoutes);
 
 // 404 error handler
 app.use((req, res, next) => {

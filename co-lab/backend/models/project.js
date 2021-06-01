@@ -2,6 +2,7 @@ const db = require("../db");
 const { NotFoundError, BadRequestError, UnauthorizedError } = require("../expressError");
 const moment = require("moment");
 const { projectUpdateQuery } = require("../helperFuncs/sql");
+const Arrangement = require("./arrangement");
 
 class Project {
   static async create(title, owner) {
@@ -27,7 +28,7 @@ class Project {
       `,
       [project.id, project.owner]
     );
-
+    Arrangement.create(project.id);
     return project;
   }
 
@@ -93,7 +94,7 @@ class Project {
                           updated_at AS "updatedAt",
                           title,
                           notes`;
-    console.log(setTerms, setVals);
+
     const res = await db.query(sql, [...setVals, projectId]);
     const project = res.rows[0];
 
