@@ -29,10 +29,12 @@ class Request {
       `
         SELECT id, accepted 
         FROM requests 
-        WHERE project_id=$1 AND sender=$2 AND recipient=$3 AND accepted IS null OR accepted IS true`,
+        WHERE project_id=$1 AND sender=$2 AND recipient=$3 AND (accepted IS null OR accepted IS true)`,
       [project_id, sender, recipient]
     );
+    console.log(project_id, sender, recipient);
     const dupRequest = dupCheck.rows[0];
+    console.log(dupCheck);
     if (dupRequest) {
       throw new BadRequestError("Request is already pending");
       return;
@@ -50,7 +52,7 @@ class Request {
     const request = query.rows[0];
     request["sentAt"] = moment(request["sentAt"])
       .local()
-      .format("M-DD-YYYY at h:mmA");
+      .format("M-DD-YYYY [at] h:mmA");
     return request;
   }
 

@@ -7,6 +7,7 @@ const router = new express.Router();
 
 router.post("/new", async (req, res, next) => {
   const { project_id, sender, recipient } = req.body;
+  console.log(project_id, sender, recipient);
   try {
     const newRequest = await Request.makeRequest(project_id, sender, recipient);
 

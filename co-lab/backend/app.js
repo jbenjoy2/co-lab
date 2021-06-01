@@ -4,11 +4,13 @@ const { ExpressError } = require("./expressError");
 const app = express();
 const userRoutes = require("./routes/users");
 const requestsRoutes = require("./routes/requests");
+const projectsRoutes = require("./routes/projects");
 app.use(cors());
 app.use(express.json());
 
 app.use("/users", userRoutes);
 app.use("/requests", requestsRoutes);
+app.use("/projects", projectsRoutes);
 
 // 404 error handler
 app.use((req, res, next) => {
