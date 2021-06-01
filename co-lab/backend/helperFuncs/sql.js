@@ -1,3 +1,4 @@
+const db = require("../db");
 const { BadRequestError } = require("../expressError");
 
 function projectUpdateQuery(rowsToUpdate, javascript) {
@@ -14,4 +15,14 @@ function projectUpdateQuery(rowsToUpdate, javascript) {
   };
 }
 
-module.exports = { projectUpdateQuery };
+async function arrangementProjectUpdate(projectId) {
+  const query = await db.query(
+    "UPDATE projects SET updated_at=CURRENT_TIMESTAMP WHERE id=$1 RETURNING updated_at",
+    [projectId]
+  );
+  const updated = query.rows[0];
+
+  if (!updated) throw new BadRequestError("Could not update project");
+}
+
+module.exports = { projectUpdateQuery, arrangementProjectUpdate };

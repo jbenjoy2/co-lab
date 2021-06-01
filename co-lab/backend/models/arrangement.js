@@ -1,6 +1,7 @@
 const db = require("../db");
 const { NotFoundError, BadRequestError, UnauthorizedError } = require("../expressError");
 const moment = require("moment");
+const { arrangementProjectUpdate } = require("../helperFuncs/sql");
 
 class Arrangement {
   static async create(projectId) {
@@ -9,7 +10,7 @@ class Arrangement {
       [projectId]
     );
     const inserted = query.rows[0];
-
+    await arrangementProjectUpdate(projectId);
     return inserted;
   }
   static async add(projectId, sectionId, position) {
@@ -27,6 +28,8 @@ class Arrangement {
     added.updatedAt = moment(added.updatedAt)
       .local()
       .format("MMM D, YYYY [at] h:mmA");
+
+    await arrangementProjectUpdate(projectId);
     return added;
   }
 
@@ -44,6 +47,7 @@ class Arrangement {
     updated.updatedAt = moment(updated.updatedAt)
       .local()
       .format("MMM D, YYYY [at] h:mmA");
+    await arrangementProjectUpdate(projectId);
     return updated;
   }
   static async getAllForProject(projectId) {
@@ -59,11 +63,17 @@ class Arrangement {
     return projectArrangement;
   }
   static async remove(id) {
-    const res = await db.query(`DELETE FROM arrangements WHERE id=$1 RETURNING id`, [id]);
+    const res = await db.query(`DELETE FROM arrangements WHERE id=$1 RETURNING id, project_id`, [
+      id
+    ]);
     const deletedArrangement = res.rows[0];
 
-    if (!deletedArrangement)
+    if (!deletedArrangement) {
       throw new NotFoundError(`Arrangement with id ${id} not found. Could not delete`);
+      return;
+    }
+
+    await arrangementProjectUpdate(deletedArrangement.project_id);
   }
   //   reset status of arrangement for a project to starting point
   static async clear(projectId) {
@@ -75,6 +85,7 @@ class Arrangement {
     if (!cleared) throw new NotFoundError(`Project with id ${projectId} not found!`);
 
     const restart = await this.create(projectId);
+    await arrangementProjectUpdate(projectId);
   }
 }
 

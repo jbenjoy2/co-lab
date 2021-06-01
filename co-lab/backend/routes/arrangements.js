@@ -19,8 +19,6 @@ router.post("/:projectId", async (req, res, next) => {
   try {
     const arrangement = await Arrangement.create(req.params.projectId);
 
-    console.log(arrangement);
-
     return res.json({ created: arrangement.project_id });
   } catch (error) {
     if (error.code === "23503") {
