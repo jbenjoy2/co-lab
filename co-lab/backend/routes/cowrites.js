@@ -4,7 +4,7 @@ const { BadRequestError } = require("../expressError");
 const Project = require("../models/project");
 
 const router = new express.Router();
-
+// use this to leave from a cowrite
 router.delete("/", async (req, res, next) => {
   const { projectId, username } = req.body;
   try {
