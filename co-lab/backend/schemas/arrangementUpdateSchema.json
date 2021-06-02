@@ -1,0 +1,43 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "required": [
+        "data"
+    ],
+    "properties": {
+        "data": {
+            "$id": "#/properties/data",
+            "type": "array",
+            "additionalItems": true,
+            "items": {
+                "anyOf": [
+                    {
+                        "$id": "#/properties/data/items/anyOf/0",
+                        "required": [
+                            "section",
+                            "position"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "$id": "#/properties/data/items/anyOf/0/properties/id",
+                                "type": "integer"
+                            },
+                            "section": {
+                                "$id": "#/properties/data/items/anyOf/0/properties/section",
+                                "type": "integer"
+                            },
+                            "position": {
+                                "$id": "#/properties/data/items/anyOf/0/properties/position",
+                                "type": "integer"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ]
+            }
+        }
+    },
+    "additionalProperties": false
+}

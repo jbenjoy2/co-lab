@@ -24,9 +24,9 @@ class User {
       if (validPW) {
         delete user.password;
         return user;
-      }
+      } else throw new UnauthorizedError("Invalid Password");
     }
-    throw new UnauthorizedError("Invalid username, password");
+    throw new UnauthorizedError("Invalid username");
   }
 
   //   register route- takes in username, password, firstName, lastName, email and checks for duplicate username and email, and throws badrequesterror if duplciate is found, otherwise returns user data

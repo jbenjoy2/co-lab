@@ -1,0 +1,21 @@
+{
+    "$id": "http://example.com/example.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "required": [],
+    "type": "object",
+    "properties": {
+        "username": {
+            "$id": "#/properties/username",
+            "type": "string"
+        },
+        "firstName": {
+            "$id": "#/properties/firstName",
+            "type": "string"
+        },
+        "lastName": {
+            "$id": "#/properties/lastName",
+            "type": "string"
+        }
+    },
+    "additionalProperties": false
+}

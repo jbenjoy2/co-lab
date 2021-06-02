@@ -1,5 +1,6 @@
 
-\prompt 'Delete and recreate colab db? Return for yes or control-C to cancel > ' foo
+\prompt
+'Delete and recreate colab db? Return for yes or control-C to cancel > ' foo
 
 DROP DATABASE colab;
 CREATE DATABASE colab;

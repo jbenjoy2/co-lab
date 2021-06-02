@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "required": [
+        "title",
+        "owner"
+    ],
+    "properties": {
+        "title": {
+            "$id": "#/properties/title",
+            "maxLength": 25,
+            "minLength": 1,
+            "type": "string"
+        },
+        "owner": {
+            "$id": "#/properties/owner",
+            "maxLength": 25,
+            "minLength": 1,
+            "type": "string"
+        }
+    },
+    "additionalProperties": false
+}

@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "required": [
+        "project_id",
+        "sender",
+        "recipient"
+    ],
+    "properties": {
+        "project_id": {
+            "$id": "#/properties/project_id",
+            "type": "integer"
+        },
+        "sender": {
+            "$id": "#/properties/sender",
+            "type": "string",
+            "minLength":1,
+            "maxLength": 25
+        },
+        "recipient": {
+            "$id": "#/properties/recipient",
+            "type": "string",
+            "minLength":1,
+            "maxLength": 25
+        }
+    },
+    "additionalProperties": false
+}

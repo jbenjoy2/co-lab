@@ -71,7 +71,7 @@ class Request {
 
     const status = statusCheck.rows[0];
 
-    if (status.accepted !== null) {
+    if (status && status.accepted !== null) {
       throw new BadRequestError("This request has already been resolved");
       return;
     }
