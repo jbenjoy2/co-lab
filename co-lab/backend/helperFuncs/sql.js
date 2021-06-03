@@ -23,6 +23,7 @@ async function arrangementProjectUpdate(projectId) {
   const updated = query.rows[0];
 
   if (!updated) throw new BadRequestError("Could not update project");
+  return updated;
 }
 
 module.exports = { projectUpdateQuery, arrangementProjectUpdate };

@@ -28,7 +28,7 @@ beforeEach(async () => {
   );
   //   project -grab id for cowrtes
   const project = await db.query(
-    `INSERT INTO projects(title, owner) VALUES('testproj', 'test1') RETURNING(id)`
+    `INSERT INTO projects(title, owner) VALUES('testproj', 'test1') RETURNING id`
   );
   projId = project.rows[0].id;
   //   cowrites
