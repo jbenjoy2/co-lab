@@ -5,6 +5,7 @@ const requestNewSchema = require("../schemas/requestNewSchema.json");
 const requestResponseSchema = require("../schemas/requestResponseSchema.json");
 const Request = require("../models/request");
 const { checkCorrectUser } = require("../Middleware/auth");
+const { checkRequestRecipient } = require("../Middleware/request");
 
 const router = new express.Router();
 
@@ -44,6 +45,32 @@ router.post("/:username/new", checkCorrectUser, async (req, res, next) => {
       } else
         error.message = `Could not send request- project with id ${req.body.project_id} not found`;
     }
+    return next(error);
+  }
+});
+// respond to request
+router.put("/:id", checkRequestRecipient, async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const validator = jsonschema.validate(req.body, requestResponseSchema);
+    if (!validator.valid) {
+      const errs = validator.errors.map(e => e.stack);
+      throw new BadRequestError(errs);
+    }
+    const { response } = req.body;
+    if (response === "accept") {
+      const accepted = await Request.accept(id);
+      console.log(accepted);
+      return res.json({ accepted });
+    } else if (response === "reject") {
+      const rejected = await Request.reject(id);
+      console.log(rejected);
+      return res.json({ rejected });
+    } else {
+      throw new BadRequestError("Please either reject or accept the request");
+    }
+  } catch (error) {
     return next(error);
   }
 });

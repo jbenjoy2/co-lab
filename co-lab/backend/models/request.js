@@ -33,6 +33,15 @@ class Request {
 
     return query.rows;
   }
+  static async getSingleRequest(id) {
+    const res = await db.query(
+      `SELECT project_id AS "projectId", recipient FROM requests WHERE id=$1`,
+      [id]
+    );
+    const request = res.rows[0];
+    if (!request) throw NotFoundError("Could not find request with given id");
+    return request;
+  }
 
   static async makeRequest(project_id, sender, recipient) {
     const dupCheck = await db.query(

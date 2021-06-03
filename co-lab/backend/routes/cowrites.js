@@ -4,10 +4,11 @@ const { BadRequestError } = require("../expressError");
 const Project = require("../models/project");
 const jsonschema = require("jsonschema");
 const cowriteLeaveSchema = require("../schemas/cowriteLeaveSchema.json");
+const { checkLoggedIn } = require("../Middleware/auth");
 const router = new express.Router();
 
 // use this to leave from a cowrite
-router.delete("/", async (req, res, next) => {
+router.delete("/", checkLoggedIn, async (req, res, next) => {
   try {
     const validator = jsonschema(req.body, cowriteLeaveSchema);
     if (!validator.valid) {

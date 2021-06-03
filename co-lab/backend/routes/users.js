@@ -84,30 +84,4 @@ router.delete("/:username", checkCorrectUser, async (req, res, next) => {
   }
 });
 
-// respond to request
-router.put("/:username/requests/:id", checkCorrectUser, async (req, res, next) => {
-  const { id } = req.params;
-
-  try {
-    const validator = jsonschema.validate(req.body, requestResponseSchema);
-    if (!validator.valid) {
-      const errs = validator.errors.map(e => e.stack);
-      throw new BadRequestError(errs);
-    }
-    const { response } = req.body;
-    if (response === "accept") {
-      const accepted = await Request.accept(id);
-      console.log(accepted);
-      return res.json({ accepted });
-    } else if (response === "reject") {
-      const rejected = await Request.reject(id);
-      console.log(rejected);
-      return res.json({ rejected });
-    } else {
-      throw new BadRequestError("Please either reject or accept the request");
-    }
-  } catch (error) {
-    return next(error);
-  }
-});
 module.exports = router;
