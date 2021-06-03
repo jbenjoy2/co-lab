@@ -8,9 +8,14 @@ const projectsRoutes = require("./routes/projects");
 const cowriteRoutes = require("./routes/cowrites");
 const arrangementsRoutes = require("./routes/arrangements");
 const sectionsRoutes = require("./routes/sections");
+const { authenticateToken } = require("./Middleware/auth");
 
+const morgan = require("morgan");
 app.use(cors());
+// log responses to server console
+app.use(morgan("dev"));
 app.use(express.json());
+app.use(authenticateToken);
 
 app.use("/users", userRoutes);
 app.use("/requests", requestsRoutes);

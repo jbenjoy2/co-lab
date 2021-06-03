@@ -2,7 +2,8 @@ const express = require("express");
 const { BadRequestError } = require("../expressError");
 
 const Arrangement = require("../models/arrangement");
-
+const jsonschema = require("jsonschema");
+const arrangementUpdateSchema = require("../schemas/arrangementUpdateSchema.json");
 const router = new express.Router();
 
 router.get("/:projectID", async (req, res, next) => {
@@ -30,9 +31,15 @@ router.post("/:projectId", async (req, res, next) => {
 });
 
 router.put("/:projectId", async (req, res, next) => {
-  const { data } = req.body;
   try {
+    const validator = jsonschema.validate(req.body, arrangementUpdateSchema);
+    if (!validator.valid) {
+      const errs = validator.errors.map(e => e.stack);
+      throw new BadRequestError(errs);
+    }
+
     //   find current state of arrangement
+    const { data } = req.body;
     const current = await Arrangement.getAllForProject(req.params.projectId);
 
     // most recent version

@@ -122,6 +122,7 @@ class Request {
       [requestId]
     );
     const result = qry.rows[0];
+    console.log(result);
     if (!result) {
       throw new NotFoundError(`Request not found and could not be rejected`);
       return;

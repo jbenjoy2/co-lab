@@ -5,6 +5,7 @@ const { UnauthorizedError } = require("../expressError");
 
 // if token is provided properly using Bearer schema, extract it and verify it. If it verifies, store payload on res.auth.user
 const authenticateToken = (req, res, next) => {
+  res.auth = {};
   try {
     const header = req.headers && req.headers.authorization;
     if (header) {
@@ -30,12 +31,14 @@ const checkLoggedIn = (req, res, next) => {
 // check token status on res.auth to see user is logged in and is also the correct user. If either is false, throw unauthorized
 
 const checkCorrectUser = (req, res, next) => {
+  console.log(res.auth.user, req.params);
   try {
     if (!(res.auth.user && res.auth.user.username === req.params.username)) {
       throw new UnauthorizedError();
     }
-  } catch (error) {
     return next();
+  } catch (error) {
+    return next(error);
   }
 };
 

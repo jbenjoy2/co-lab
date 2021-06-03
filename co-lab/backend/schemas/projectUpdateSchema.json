@@ -1,7 +1,7 @@
 {
     "$id": "http://example.com/example.json",
     "$schema": "http://json-schema.org/draft-07/schema",
-    "required": [],
+    "required": ["owner"],
     "type": "object",
     "properties": {
         "title": {
@@ -10,7 +10,13 @@
         },
         "notes": {
             "$id": "#/properties/notes",
-            "type": "string"
+            "type": "string"     
+        },
+        "owner": {
+            "$id": "#/properties/owner",
+            "type":"string",
+            "maxLength": 25,
+            "minLength": 1
         }
     },
     "additionalProperties": false

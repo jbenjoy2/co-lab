@@ -1,14 +1,26 @@
 const express = require("express");
 const { tokenFactory } = require("../helperFuncs/token");
 const { BadRequestError } = require("../expressError");
-
+const jsonschema = require("jsonschema");
+const userSearchSchema = require("../schemas/userSearchSchema.json");
+const userAuthSchema = require("../schemas/userAuthSchema.json");
+const userNewSchema = require("../schemas/userNewSchema.json");
+const requestResponseSchema = require("../schemas/requestResponseSchema.json");
+const { checkCorrectUser, checkLoggedIn } = require("../Middleware/auth");
 const User = require("../models/user");
+const Request = require("../models/request");
 
 const router = new express.Router();
 
-router.get("/", async (req, res, next) => {
+router.get("/", checkLoggedIn, async (req, res, next) => {
   const q = req.query;
   try {
+    const validation = jsonschema.validate(q, userSearchSchema);
+    if (!validation.valid) {
+      const errs = validation.errors.map(e => e.stack);
+      throw new BadRequestError(errs);
+    }
+
     const users = await User.findAll(q);
     console.log(users.length);
     if (users.length > 0) {
@@ -20,7 +32,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:username", async (req, res, next) => {
+router.get("/:username", checkLoggedIn, async (req, res, next) => {
   try {
     const user = await User.getUser(req.params.username);
     return res.json({ user });
@@ -31,6 +43,12 @@ router.get("/:username", async (req, res, next) => {
 
 router.post("/register", async (req, res, next) => {
   try {
+    const validator = jsonschema.validate(req.body, userNewSchema);
+    if (!validator.valid) {
+      const errs = validator.errors.map(e => e.stack);
+      throw new BadRequestError(errs);
+    }
+
     const newUser = await User.register({ ...req.body });
     const token = tokenFactory(newUser);
     return res.status(201).json({ token });
@@ -41,6 +59,12 @@ router.post("/register", async (req, res, next) => {
 
 router.post("/login", async (req, res, next) => {
   try {
+    const validator = jsonschema.validate(req.body, userAuthSchema);
+    if (!validator.valid) {
+      const errs = validator.errors.map(e => e.stack);
+      throw new BadRequestError(errs);
+    }
+
     const { username, password } = req.body;
 
     const user = await User.authenticate(username, password);
@@ -51,7 +75,7 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-router.delete("/:username", async (req, res, next) => {
+router.delete("/:username", checkCorrectUser, async (req, res, next) => {
   try {
     await User.remove(req.params.username);
     return res.json({ deleted: req.params.username });
@@ -60,4 +84,30 @@ router.delete("/:username", async (req, res, next) => {
   }
 });
 
+// respond to request
+router.put("/:username/requests/:id", checkCorrectUser, async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const validator = jsonschema.validate(req.body, requestResponseSchema);
+    if (!validator.valid) {
+      const errs = validator.errors.map(e => e.stack);
+      throw new BadRequestError(errs);
+    }
+    const { response } = req.body;
+    if (response === "accept") {
+      const accepted = await Request.accept(id);
+      console.log(accepted);
+      return res.json({ accepted });
+    } else if (response === "reject") {
+      const rejected = await Request.reject(id);
+      console.log(rejected);
+      return res.json({ rejected });
+    } else {
+      throw new BadRequestError("Please either reject or accept the request");
+    }
+  } catch (error) {
+    return next(error);
+  }
+});
 module.exports = router;
