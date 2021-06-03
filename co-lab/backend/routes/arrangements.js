@@ -4,7 +4,7 @@ const { BadRequestError } = require("../expressError");
 const Arrangement = require("../models/arrangement");
 const jsonschema = require("jsonschema");
 const arrangementUpdateSchema = require("../schemas/arrangementUpdateSchema.json");
-const { checkProjectContributor } = require("../Middleware/project");
+const { checkProjectContributor, checkProjectOwner } = require("../Middleware/project");
 const router = new express.Router();
 
 router.get("/:projectId", checkProjectContributor, async (req, res, next) => {

@@ -14,7 +14,7 @@ function getDatabaseUri() {
   return process.env.NODE_ENV === "test" ? "colab_test" : process.env.DATABASE_URL || "colab";
 }
 
-const BCRYPT_WORK_FACTOR = 13;
+const BCRYPT_WORK_FACTOR = process.env.NODE_ENV === "test" ? 1 : 13;
 
 console.log("Colab Config:".green);
 console.log("SECRET_KEY:".red, SECRET_KEY);
