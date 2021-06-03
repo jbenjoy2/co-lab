@@ -20,7 +20,6 @@ describe("config environment variables", function() {
 
     expect(config.getDatabaseUri()).toEqual("colab");
     process.env.NODE_ENV = "test";
-
     expect(config.getDatabaseUri()).toEqual("colab_test");
   });
 });
