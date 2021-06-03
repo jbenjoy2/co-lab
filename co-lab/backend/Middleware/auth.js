@@ -31,7 +31,6 @@ const checkLoggedIn = (req, res, next) => {
 // check token status on res.auth to see user is logged in and is also the correct user. If either is false, throw unauthorized
 
 const checkCorrectUser = (req, res, next) => {
-  console.log(res.auth.user, req.params);
   try {
     if (!(res.auth.user && res.auth.user.username === req.params.username)) {
       throw new UnauthorizedError();
