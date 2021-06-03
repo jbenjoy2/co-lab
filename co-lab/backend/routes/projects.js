@@ -25,7 +25,7 @@ router.post("/new", checkProjectOwner, async (req, res, next) => {
   }
 });
 
-router.get("/:id", checkProjectContributor, async (req, res, next) => {
+router.get("/:projectId", checkProjectContributor, async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -36,7 +36,7 @@ router.get("/:id", checkProjectContributor, async (req, res, next) => {
   }
 });
 
-router.patch("/:id", checkProjectContributor, async (req, res, next) => {
+router.patch("/:projectId", checkProjectContributor, async (req, res, next) => {
   try {
     const validator = jsonschema.validate(req.body, projectUpdateSchema);
     if (!validator.valid) {
@@ -51,7 +51,7 @@ router.patch("/:id", checkProjectContributor, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", checkProjectOwner, async (req, res, next) => {
+router.delete("/:projectId", checkProjectOwner, async (req, res, next) => {
   try {
     await Project.remove(req.params.id);
     return res.json({ deleted: req.params.id });

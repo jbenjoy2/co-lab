@@ -4,7 +4,7 @@ const Project = require("../models/project");
 
 const checkProjectContributor = (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = req.params.projectId;
     Project.get(id)
       .then(data => {
         if (data.contributors.indexOf(res.auth.user.username) === -1) {

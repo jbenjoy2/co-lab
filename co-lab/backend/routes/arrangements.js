@@ -4,9 +4,10 @@ const { BadRequestError } = require("../expressError");
 const Arrangement = require("../models/arrangement");
 const jsonschema = require("jsonschema");
 const arrangementUpdateSchema = require("../schemas/arrangementUpdateSchema.json");
+const { checkProjectContributor } = require("../Middleware/project");
 const router = new express.Router();
 
-router.get("/:projectID", async (req, res, next) => {
+router.get("/:projectId", checkProjectContributor, async (req, res, next) => {
   try {
     const arrangement = await Arrangement.getAllForProject(req.params.projectID);
 
@@ -15,7 +16,7 @@ router.get("/:projectID", async (req, res, next) => {
     return next(error);
   }
 });
-router.post("/:projectId", async (req, res, next) => {
+router.post("/:projectId", checkProjectOwner, async (req, res, next) => {
   // create new one manually if front end is being weird;
   try {
     const arrangement = await Arrangement.create(req.params.projectId);
@@ -30,7 +31,7 @@ router.post("/:projectId", async (req, res, next) => {
   }
 });
 
-router.put("/:projectId", async (req, res, next) => {
+router.put("/:projectId", checkProjectContributor, async (req, res, next) => {
   try {
     const validator = jsonschema.validate(req.body, arrangementUpdateSchema);
     if (!validator.valid) {
@@ -72,7 +73,7 @@ router.put("/:projectId", async (req, res, next) => {
   }
 });
 // this route does NOT delete entirely from the table, but instead triggers the "clear" method on the arrangement model to restart from scratch (fast way to clear out instead of moving everything one by one)
-router.delete("/:projectId/clear", async (req, res, next) => {
+router.delete("/:projectId/clear", checkProjectContributor, async (req, res, next) => {
   try {
     await Arrangement.clear(req.params.projectId);
     return res.json({ "arrangement reset": req.params.projectId });
