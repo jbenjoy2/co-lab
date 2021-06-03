@@ -39,7 +39,7 @@ class Request {
       [id]
     );
     const request = res.rows[0];
-    if (!request) throw NotFoundError("Could not find request with given id");
+    if (!request) throw new NotFoundError("Could not find request with given id");
     return request;
   }
 

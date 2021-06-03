@@ -2,19 +2,14 @@ const { UnauthorizedError } = require("../expressError");
 
 const Request = require("../models/request");
 
-const checkRequestRecipient = (req, res, next) => {
+const checkRequestRecipient = async (req, res, next) => {
   try {
     const { id } = req.params;
-    Request.getSingleRequest(id)
-      .then(data => {
-        if (data.recipient !== res.auth.user.username) {
-          throw new UnauthorizedError();
-        }
-        return next();
-      })
-      .catch(e => {
-        return next(e);
-      });
+    const request = await Request.getSingleRequest(id);
+    if (request.recipient && request.recipient !== res.auth.user.username) {
+      throw new UnauthorizedError();
+    }
+    return next();
   } catch (error) {
     return next(error);
   }
