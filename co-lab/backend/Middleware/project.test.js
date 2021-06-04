@@ -1,5 +1,3 @@
-process.env.NODE_ENV = "test";
-
 const db = require("../db");
 const bcrypt = require("bcrypt");
 const { checkProjectContributor, checkProjectOwner } = require("./project");

@@ -31,6 +31,7 @@ app.use((req, res, next) => {
 });
 // general error handler
 app.use((err, req, res, next) => {
+  if (process.env.NODE_ENV !== "test") console.error(err.stack);
   const status = err.status || 500;
   return res.status(status).json({
     error: {

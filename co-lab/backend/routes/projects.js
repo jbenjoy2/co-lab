@@ -9,7 +9,7 @@ const router = new express.Router();
 const { checkCorrectUser, checkLoggedIn } = require("../Middleware/auth");
 const { checkProjectOwner, checkProjectContributor } = require("../Middleware/project");
 
-router.post("/new", checkProjectOwner, async (req, res, next) => {
+router.post("/new", async (req, res, next) => {
   try {
     const validator = jsonschema.validate(req.body, projectNewSchema);
     if (!validator.valid) {
@@ -26,10 +26,10 @@ router.post("/new", checkProjectOwner, async (req, res, next) => {
 });
 
 router.get("/:projectId", checkProjectContributor, async (req, res, next) => {
-  const { id } = req.params;
+  const { projectId } = req.params;
 
   try {
-    const project = await Project.get(id);
+    const project = await Project.get(projectId);
     return res.json({ project });
   } catch (error) {
     return next(error);
