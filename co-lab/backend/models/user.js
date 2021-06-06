@@ -98,6 +98,13 @@ class User {
     // order by username;
     sql += "ORDER BY username";
     try {
+      const keys = new Set(Object.keys(searchOptions).map(k => k));
+
+      if (keys.size > 0) {
+        if (!(keys.has("firstName") || keys.has("lastName") || keys.has("username"))) {
+          throw new BadRequestError("Invalid filter");
+        }
+      }
       const usersResults = await db.query(sql, queryValues);
       return usersResults.rows;
     } catch (error) {
@@ -139,9 +146,6 @@ class User {
       r["updatedAt"] = moment(updated)
         .local()
         .format("MMM DD, YYYY [at] h:mmA");
-      if (r.is_owner === null) {
-        r.is_owner = true;
-      }
     });
     foundUser.projects = projectsRes.rows;
 

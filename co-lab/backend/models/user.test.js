@@ -2,7 +2,7 @@
 
 const { NotFoundError, BadRequestError, UnauthorizedError } = require("../expressError");
 const db = require("../db.js");
-const User = require("./user.js");
+const User = require("./user");
 const {
   beforeAllCommon,
   beforeEachCommon,
@@ -220,6 +220,13 @@ describe("findAll", () => {
   it("should return empty list if filter returns nothing", async () => {
     let users = await User.findAll({ username: "notgonnafindme" });
     expect(users).toEqual([]);
+  });
+  it("should throw an error if one occurs", async () => {
+    try {
+      let users = await User.findAll({ job: "invalid" });
+    } catch (error) {
+      expect(error instanceof BadRequestError).toBeTruthy();
+    }
   });
 });
 

@@ -5,7 +5,7 @@ const { projectUpdateQuery } = require("../helperFuncs/sql");
 const Arrangement = require("./arrangement");
 
 class Project {
-  static async create(title, owner) {
+  static async create({ title, owner }) {
     const qry = await db.query(
       `
             INSERT INTO projects (title, owner)
@@ -98,11 +98,11 @@ class Project {
     const res = await db.query(sql, [...setVals, projectId]);
     const project = res.rows[0];
 
+    if (!project) throw new NotFoundError("Project not found! Could not update");
     project.updatedAt = moment(project.updatedAt)
       .local()
       .format("MMM D, YYYY [at] h:mma");
 
-    if (!project) throw new NotFoundError("Project not found! Could not update");
     return project;
   }
 
