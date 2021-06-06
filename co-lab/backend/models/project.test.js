@@ -165,5 +165,23 @@ describe("leave", () => {
     }
   });
 });
+
+// <------------------------- remove ------------>
+describe("remove", () => {
+  it("should successfully remove a project from the database with a valid project Id", async () => {
+    await Project.remove(projIDs[0]);
+    // check db for removed project
+    const dbCheck = await db.query(`SELECT * FROM projects WHERE id=$1`, [projIDs[0]]);
+    expect(dbCheck.rows.length).toEqual(0);
+  });
+  it("should throw not found with invalid project Id", async () => {
+    try {
+      await Project.remove(0);
+    } catch (error) {
+      expect(error instanceof NotFoundError).toBeTruthy();
+    }
+  });
+});
+
 afterEach(afterEachCommon);
 afterAll(afterAllCommon);

@@ -5,6 +5,7 @@ const { BCRYPT_WORK_FACTOR } = require("../config");
 const projIDs = [];
 const reqIDs = [];
 const secIds = [];
+const arrIds = [];
 
 const beforeAllCommon = async () => {
   // database actions before all of them to reset the database;
@@ -36,15 +37,18 @@ const beforeAllCommon = async () => {
     projIDs[0]
   ]);
 
-  //   add a blank arrangement
-  await db.query(`INSERT INTO arrangements(project_id ) VALUES($1)`, [projIDs[0]]);
-
   //   add some test sections of intro, verse and chorus
   const sections = await db.query(
     `INSERT INTO sections (name) values ('intro'), ('verse'), ('chorus') RETURNING id`
   );
   secIds.splice(0, 0, ...sections.rows.map(s => s.id));
 
+  //   add some arrangements
+  const arrangements = await db.query(
+    `INSERT INTO arrangements(project_id, section_id, position ) VALUES($1, $2, 0), ($1, $3, 1), ($1, $4, 2) RETURNING id`,
+    [projIDs[0], secIds[0], secIds[1], secIds[2]]
+  );
+  arrIds.splice(0, 0, ...arrangements.rows.map(a => a.id));
   //   add a request to collaborate
   const request = await db.query(
     `INSERT INTO requests (project_id, sender, recipient) VALUES ($1, 'u1', 'u2') RETURNING id`,
@@ -75,5 +79,6 @@ module.exports = {
   afterAllCommon,
   reqIDs,
   projIDs,
-  secIds
+  secIds,
+  arrIds
 };

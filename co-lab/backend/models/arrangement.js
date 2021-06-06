@@ -14,23 +14,23 @@ class Arrangement {
     return inserted;
   }
   static async add(projectId, sectionId, position) {
-    const query = await db.query(
-      `INSERT INTO arrangements(project_id, section_id, position) VALUES($1, $2, $3) RETURNING id, project_id AS "projectId", section_id AS "sectionId", position AS "index",updated_at AS "updatedAt"`,
-      [projectId, sectionId, position]
-    );
+    try {
+      const query = await db.query(
+        `INSERT INTO arrangements(project_id, section_id, position) VALUES($1, $2, $3) RETURNING id, project_id AS "projectId", section_id AS "sectionId", position AS "index",updated_at AS "updatedAt"`,
+        [projectId, sectionId, position]
+      );
 
-    const added = query.rows[0];
-    if (!added) {
+      const added = query.rows[0];
+
+      added.updatedAt = moment(added.updatedAt)
+        .local()
+        .format("MMM D, YYYY [at] h:mmA");
+
+      await arrangementProjectUpdate(projectId);
+      return added;
+    } catch (error) {
       throw new BadRequestError("Could not add new arrangement");
-      return;
     }
-
-    added.updatedAt = moment(added.updatedAt)
-      .local()
-      .format("MMM D, YYYY [at] h:mmA");
-
-    await arrangementProjectUpdate(projectId);
-    return added;
   }
 
   static async update(id, newPosition) {
@@ -42,8 +42,8 @@ class Arrangement {
     const updated = query.rows[0];
     if (!updated) {
       throw new BadRequestError("Could not update arrangement");
-      return;
     }
+    const projectId = query.rows[0].projectId;
     updated.updatedAt = moment(updated.updatedAt)
       .local()
       .format("MMM D, YYYY [at] h:mmA");
@@ -52,7 +52,7 @@ class Arrangement {
   }
   static async getAllForProject(projectId) {
     const query = await db.query(
-      `SELECT a.id, s.id as "section id", s.name as "Section Name", a.position AS "index" FROM arrangements a LEFT JOIN sections s ON a.section_id=s.id WHERE a.project_id=$1 ORDER BY a.position`,
+      `SELECT a.id, s.id as "sectionId", s.name as "sectionName", a.position AS "index" FROM arrangements a LEFT JOIN sections s ON a.section_id=s.id WHERE a.project_id=$1 ORDER BY a.position`,
       [projectId]
     );
     const projectArrangement = query.rows;
@@ -70,7 +70,6 @@ class Arrangement {
 
     if (!deletedArrangement) {
       throw new NotFoundError(`Arrangement with id ${id} not found. Could not delete`);
-      return;
     }
 
     await arrangementProjectUpdate(deletedArrangement.project_id);
