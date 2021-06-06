@@ -1,7 +1,7 @@
 "use strict";
 
-const { NotFoundError, BadRequestError, UnauthorizedError } = require("../expressError");
-const db = require("../db.js");
+const { NotFoundError } = require("../expressError");
+
 const Section = require("./section");
 const {
   beforeAllCommon,

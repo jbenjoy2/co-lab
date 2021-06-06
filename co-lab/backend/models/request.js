@@ -12,7 +12,6 @@ class Request {
 
     if (!user) {
       throw new NotFoundError(`User with username: ${username} not found`);
-      return;
     }
     const query = await db.query(
       `
@@ -56,7 +55,6 @@ class Request {
 
     if (dupRequest) {
       throw new BadRequestError("Request is already pending");
-      return;
     }
 
     const query = await db.query(
@@ -82,7 +80,6 @@ class Request {
 
     if (status && status.accepted !== null) {
       throw new BadRequestError("This request has already been resolved");
-      return;
     }
     const qry = await db.query(
       `
@@ -98,10 +95,9 @@ class Request {
 
     if (!result) {
       throw new NotFoundError(`Request not found and could not be accepted`);
-      return;
     }
     // insert new collaborations into cowrites using returned projectID, recipient; owner will already exist in table
-    const { project_id, sender, recipient } = result;
+    const { project_id, recipient } = result;
     const insert = await db.query(
       `
         INSERT INTO cowrites(project_id, username, is_owner)
@@ -115,26 +111,31 @@ class Request {
     const insertRes = insert.rows[0];
     if (!insertRes) {
       throw new BadRequestError("Collaboration could not be made. Please try again");
-      return;
     }
     return result;
   }
 
   static async reject(requestId) {
+    const statusCheck = await db.query(`SELECT accepted FROM requests WHERE id=$1`, [requestId]);
+
+    const status = statusCheck.rows[0];
+
+    if (status && status.accepted !== null) {
+      throw new BadRequestError("This request has already been resolved");
+    }
     const qry = await db.query(
       `
         UPDATE requests
         SET accepted=false
         WHERE id=$1
-        RETURNING project_id, sender, recipient
+        RETURNING project_id, sender, recipient, accepted
       `,
       [requestId]
     );
     const result = qry.rows[0];
-    console.log(result);
+
     if (!result) {
       throw new NotFoundError(`Request not found and could not be rejected`);
-      return;
     }
     return result;
   }
