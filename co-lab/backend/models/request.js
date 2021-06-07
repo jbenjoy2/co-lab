@@ -61,7 +61,7 @@ class Request {
       `
         INSERT INTO requests (project_id, sender, recipient)
         VALUES ($1, $2, $3)
-        RETURNING sender, recipient, accepted, sent_at AS "sentAt" 
+        RETURNING id, sender, recipient, accepted, sent_at AS "sentAt" 
       `,
       [project_id, sender, recipient]
     );

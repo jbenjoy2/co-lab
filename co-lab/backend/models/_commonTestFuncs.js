@@ -11,7 +11,7 @@ const beforeAllCommon = async () => {
   // database actions before all of them to reset the database;
 
   // delete all users no where clause needed; will, on cascade, delete any other cells since they're all somehow tied back to a user (except for sections)
-  await db.query(`DELETE FROM users;`);
+  await db.query(`DELETE FROM users`);
   await db.query(`DELETE FROM sections`);
 
   //   add some users

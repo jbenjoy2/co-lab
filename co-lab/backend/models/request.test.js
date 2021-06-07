@@ -68,6 +68,7 @@ describe("makeRequest", () => {
     // make new request;
     const request = await Request.makeRequest(projIDs[0], "u1", "u3");
     expect(request).toEqual({
+      id: expect.any(Number),
       sender: "u1",
       recipient: "u3",
       accepted: null,
