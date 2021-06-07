@@ -22,7 +22,7 @@ router.get("/", checkLoggedIn, async (req, res, next) => {
     }
 
     const users = await User.findAll(q);
-    console.log(users.length);
+
     if (users.length > 0) {
       return res.json({ users });
     }

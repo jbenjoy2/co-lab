@@ -54,8 +54,8 @@ const beforeAllCommon = async () => {
   })).id;
 
   //   add two requests that are not yet responded to
-  reqIds[1] = (await Request.makeRequest(projIds[2], "testuser2", "testuser3")).id;
   reqIds[0] = (await Request.makeRequest(projIds[0], "testuser1", "testuser2")).id;
+  reqIds[1] = (await Request.makeRequest(projIds[2], "testuser2", "testuser3")).id;
 
   // store the arrangement ids for the default created arrangements;
   arrIds[0] = (await Arrangement.getAllForProject(projIds[0])).id;
