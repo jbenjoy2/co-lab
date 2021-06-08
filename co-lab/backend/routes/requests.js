@@ -37,7 +37,7 @@ router.post("/:username/new", checkCorrectUser, async (req, res, next) => {
     return res.status(201).json({ newRequest });
   } catch (error) {
     if (error.code === "23503") {
-      console.log(error);
+      error.status = 404;
       if (error.constraint === "requests_recipient_fkey") {
         error.message = `Could not send request- recipient ${req.body.recipient} not found`;
       } else if (error.constraint === "requests_sender_fkey") {
@@ -61,11 +61,9 @@ router.put("/:id", checkRequestRecipient, async (req, res, next) => {
     const { response } = req.body;
     if (response === "accept") {
       const accepted = await Request.accept(id);
-      console.log(accepted);
       return res.json({ accepted });
     } else if (response === "reject") {
       const rejected = await Request.reject(id);
-      console.log(rejected);
       return res.json({ rejected });
     } else {
       throw new BadRequestError("Please either reject or accept the request");

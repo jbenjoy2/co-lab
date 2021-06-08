@@ -128,7 +128,7 @@ class Request {
         UPDATE requests
         SET accepted=false
         WHERE id=$1
-        RETURNING project_id, sender, recipient, accepted
+        RETURNING id, project_id, sender, recipient, accepted
       `,
       [requestId]
     );

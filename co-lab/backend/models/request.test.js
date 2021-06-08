@@ -1,6 +1,6 @@
 "use strict";
 
-const { NotFoundError, BadRequestError, UnauthorizedError } = require("../expressError");
+const { NotFoundError, BadRequestError } = require("../expressError");
 const db = require("../db.js");
 const Request = require("./request");
 const {
@@ -159,6 +159,7 @@ describe("Reject", () => {
   it("should work to reject a pending request", async () => {
     const request = await Request.reject(reqIDs[0]);
     expect(request).toEqual({
+      id: reqIDs[0],
       project_id: projIDs[0],
       sender: "u1",
       recipient: "u2",
