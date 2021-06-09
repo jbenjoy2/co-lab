@@ -16,8 +16,7 @@ const {
 
 beforeAll(beforeAllCommon);
 beforeEach(beforeEachCommon);
-const { tokenFactory } = require("../helperFuncs/token");
-const db = require("../db");
+
 const Request = require("../models/request");
 // <------------------ POST /projects/new------------>
 describe("POST /projects/new", () => {
