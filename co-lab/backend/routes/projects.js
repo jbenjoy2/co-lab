@@ -6,7 +6,7 @@ const jsonschema = require("jsonschema");
 const projectNewSchema = require("../schemas/projectNewSchema.json");
 const projectUpdateSchema = require("../schemas/projectUpdateSchema.json");
 const router = new express.Router();
-const { checkCorrectUser, checkLoggedIn } = require("../Middleware/auth");
+
 const { checkProjectOwner, checkProjectContributor } = require("../Middleware/project");
 
 router.post("/new", async (req, res, next) => {
@@ -18,7 +18,8 @@ router.post("/new", async (req, res, next) => {
     }
 
     const { title, owner } = req.body;
-    const newProject = await Project.create(title, owner);
+
+    const newProject = await Project.create({ title, owner });
     return res.status(201).json({ newProject });
   } catch (error) {
     return next(error);
@@ -44,7 +45,7 @@ router.patch("/:projectId", checkProjectContributor, async (req, res, next) => {
       throw new BadRequestError(errs);
     }
 
-    const proj = await Project.update(req.params.id, req.body);
+    const proj = await Project.update(req.params.projectId, req.body);
     return res.json({ updated: proj });
   } catch (error) {
     return next(error);
@@ -53,8 +54,8 @@ router.patch("/:projectId", checkProjectContributor, async (req, res, next) => {
 
 router.delete("/:projectId", checkProjectOwner, async (req, res, next) => {
   try {
-    await Project.remove(req.params.id);
-    return res.json({ deleted: req.params.id });
+    await Project.remove(req.params.projectId);
+    return res.json({ deleted: req.params.projectId });
   } catch (error) {
     return next(error);
   }

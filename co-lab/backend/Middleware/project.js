@@ -6,7 +6,7 @@ const checkProjectContributor = async (req, res, next) => {
   try {
     const id = req.params.projectId;
     const project = await Project.get(id);
-    if (project.contributors.indexOf(res.auth.user.username) === -1) {
+    if (!res.auth.user || project.contributors.indexOf(res.auth.user.username) === -1) {
       throw new UnauthorizedError();
     }
     return next();
