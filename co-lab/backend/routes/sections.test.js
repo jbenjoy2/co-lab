@@ -8,10 +8,6 @@ const {
   beforeEachCommon,
   afterAllCommon,
   afterEachCommon,
-  u1token,
-  u2token,
-  projIds,
-  reqIds,
   secIds
 } = require("./_commonTestFuncs");
 
