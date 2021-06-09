@@ -3,10 +3,8 @@ const bcrypt = require("bcrypt");
 const { checkProjectContributor, checkProjectOwner } = require("./project");
 const { UnauthorizedError } = require("../expressError");
 const BCRYPT_WORK_FACTOR = 1;
+let projId;
 
-beforeAll(function() {
-  let projId;
-});
 beforeEach(async () => {
   //   add three users to the database- one for the owner, one for contributor, one for neither, and add one project wiht an owner and a contributor in the cowrites
 

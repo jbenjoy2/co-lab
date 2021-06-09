@@ -9,7 +9,7 @@ const router = new express.Router();
 
 router.get("/:projectId", checkProjectContributor, async (req, res, next) => {
   try {
-    const arrangement = await Arrangement.getAllForProject(req.params.projectID);
+    const arrangement = await Arrangement.getAllForProject(req.params.projectId);
 
     return res.json({ arrangement });
   } catch (error) {
@@ -21,12 +21,8 @@ router.post("/:projectId", checkProjectOwner, async (req, res, next) => {
   try {
     const arrangement = await Arrangement.create(req.params.projectId);
 
-    return res.json({ created: arrangement.project_id });
+    return res.status(201).json({ created: arrangement.project_id });
   } catch (error) {
-    if (error.code === "23503") {
-      const bad = new BadRequestError("Could not create new arrangement");
-      return next(bad);
-    }
     return next(error);
   }
 });

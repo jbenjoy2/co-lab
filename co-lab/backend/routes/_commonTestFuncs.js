@@ -58,9 +58,9 @@ const beforeAllCommon = async () => {
   reqIds[1] = (await Request.makeRequest(projIds[2], "testuser2", "testuser3")).id;
 
   // store the arrangement ids for the default created arrangements;
-  arrIds[0] = (await Arrangement.getAllForProject(projIds[0])).id;
-  arrIds[1] = (await Arrangement.getAllForProject(projIds[1])).id;
-  arrIds[2] = (await Arrangement.getAllForProject(projIds[2])).id;
+  arrIds[0] = (await Arrangement.getAllForProject(projIds[0]))[0].id;
+  arrIds[1] = (await Arrangement.getAllForProject(projIds[1]))[0].id;
+  arrIds[2] = (await Arrangement.getAllForProject(projIds[2]))[0].id;
 
   //   add some sections
   const sections = await db.query(
