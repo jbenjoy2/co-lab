@@ -107,19 +107,23 @@ class Project {
   }
 
   static async leave(id, username) {
-    const qry = await db.query(
-      `DELETE FROM cowrites
-          WHERE (project_id=$1 AND username=$2)
-          returning is_owner as "isOwner"`,
-      [id, username]
-    );
-    const deleted = qry.rows[0];
-    if (!deleted)
-      throw new BadRequestError(
-        `User with username ${username} not a cowriter on projectd with id ${id}`
+    try {
+      const qry = await db.query(
+        `DELETE FROM cowrites
+            WHERE (project_id=$1 AND username=$2)
+            returning is_owner as "isOwner"`,
+        [id, username]
       );
-    if (deleted.isOwner === true) {
-      await db.query(`DELETE FROM projects WHERE id=$1`, [id]);
+      const deleted = qry.rows[0];
+      if (!deleted)
+        throw new BadRequestError(
+          `User with username ${username} not a cowriter on projectd with id ${id}`
+        );
+      if (deleted.isOwner === true) {
+        await db.query(`DELETE FROM projects WHERE id=$1`, [id]);
+      }
+    } catch (error) {
+      console.log("error", error);
     }
   }
 }

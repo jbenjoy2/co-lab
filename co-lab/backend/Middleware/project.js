@@ -4,7 +4,7 @@ const Project = require("../models/project");
 
 const checkProjectContributor = async (req, res, next) => {
   try {
-    const id = req.params.projectId;
+    const id = req.params.projectId || req.body.projectId;
     const project = await Project.get(id);
     if (!res.auth.user || project.contributors.indexOf(res.auth.user.username) === -1) {
       throw new UnauthorizedError();
@@ -24,6 +24,7 @@ const checkProjectOwner = async (req, res, next) => {
     }
     return next();
   } catch (error) {
+    console.log(error);
     return next(error);
   }
 };
