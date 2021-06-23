@@ -1,0 +1,30 @@
+.Navigation {
+  background-color: white;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.125);
+}
+
+.nav-link.active {
+  font-weight: bold;
+  color: black;
+}
+
+.dropdown-toggle.nav-link:after {
+  display: none;
+}
+
+.nav-link.nav-item.dropdown {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.dropdown-menu.show {
+  background-color: rgba(0, 0, 0, 0.125);
+  width: 25rem;
+}
+.dropdown-item {
+  color: wheat !important;
+}
+.dropdown-item:hover {
+  background-color: #343a3f !important;
+}

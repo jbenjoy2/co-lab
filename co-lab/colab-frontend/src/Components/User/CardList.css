@@ -1,0 +1,42 @@
+.CardList {
+  display: flex;
+  min-width: 135px;
+  max-width: 50%;
+  overflow-x: scroll;
+  padding: 25px;
+  justify-content: flex-start;
+  border: 5px solid transparent;
+  border-radius: 5px;
+  background-color: #3597b1;
+  margin-top: 2em;
+}
+
+.CardList::-webkit-scrollbar {
+  width: 2px;
+  height: 15px;
+  background-color: #215c6d3f;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+.CardList::-webkit-scrollbar-thumb {
+  height: 10px;
+  width: 20px;
+  background-color: #215d6d;
+  border: 1px solid #174450;
+  border-radius: 10px;
+}
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.card-link {
+  text-decoration: none;
+
+  transition: opacity 600ms ease;
+}
+.card-link:hover {
+  text-decoration: none;
+
+  opacity: 0.68;
+}

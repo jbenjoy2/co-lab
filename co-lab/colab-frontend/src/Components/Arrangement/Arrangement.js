@@ -1,0 +1,176 @@
+import React, { useEffect, useState } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
+import SectionsSource from "./SectionsSource";
+import SectionsDest from "./SectionsDest";
+import { v4 as uuid } from "uuid";
+import styled from "styled-components";
+import initialData from "../../initial-data";
+import up from "./audio/buttonUp.mp3";
+import down from "./audio/buttonDown.mp3";
+import whoosh from "./audio/whoosh.mp3";
+import useSound from "use-sound";
+import ToolBar from "./Buttons";
+import { useParams } from "react-router-dom";
+import ColabAPI from "../../api/colabApi";
+import Alert from "react-bootstrap/Alert";
+
+const Container = styled.div`
+  display: flex;
+  width: 100vw;
+  justify-content: space-evenly;
+  border-bottom: none;
+  margin-top: 2vw;
+`;
+
+function Arrangement() {
+  const { projectId } = useParams();
+  const [playUp] = useSound(up);
+  const [playDown] = useSound(down);
+  const [playWhoosh] = useSound(whoosh);
+  const [sectionsAPI, setSectionsAPI] = useState([]);
+  const [arrangements, setArrangements] = useState([]);
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    async function getSections() {
+      const sections = await ColabAPI.getSections();
+      setSectionsAPI(
+        sections.map(section => {
+          return {
+            sectionId: section.id,
+            sectionName: section.name,
+            dragId: uuid()
+          };
+        })
+      );
+    }
+    getSections();
+  }, []);
+
+  useEffect(() => {
+    async function getProjectArrangement() {
+      const arrangement = await ColabAPI.getArrangement(projectId);
+      const usableArrangements = arrangement.filter(arr => arr.sectionId !== null);
+      setArrangements(
+        usableArrangements.map(arr => ({
+          ...arr,
+          dragId: uuid()
+        }))
+      );
+    }
+    getProjectArrangement();
+  }, []);
+
+  const adjustOrder = (arr, startIdx, endIdx) => {
+    const arrCopy = [...arr];
+    const [removed] = arrCopy.splice(startIdx, 1);
+    arrCopy.splice(endIdx, 0, removed);
+
+    return arrCopy;
+  };
+
+  const copyItem = (source, dest, droppableSource, droppableDest) => {
+    const sourceCopy = Array.from(source);
+    const destCopy = Array.from(dest);
+
+    const itemToCopy = sourceCopy[droppableSource.index];
+    console.log("ITEM", itemToCopy);
+    destCopy.splice(droppableDest.index, 0, { ...itemToCopy, dragId: uuid() });
+
+    return destCopy;
+  };
+  const move = (source, destination, droppableSource, droppableDestination) => {
+    const sourceClone = Array.from(source);
+    console.log("moving");
+    const destClone = Array.from(destination);
+    const removed = sourceClone.splice(droppableSource.index, 1);
+
+    destClone.splice(droppableDestination.index, 0, removed);
+
+    const result = {};
+    result[droppableSource.droppableId] = sourceClone;
+    result[droppableDestination.droppableId] = destClone;
+
+    return result;
+  };
+
+  const removeItem = dragId => {
+    const filtered = arrangements.filter(arr => arr.dragId !== dragId);
+    setArrangements(filtered);
+  };
+  const handleDragEnd = result => {
+    const { destination, source } = result;
+    if (!destination) {
+      playWhoosh();
+      return;
+    }
+    switch (source.droppableId) {
+      case destination.droppableId:
+        if (destination.droppableId === "sections") break;
+        const reordered = adjustOrder(arrangements, source.index, destination.index);
+        setArrangements([...reordered]);
+        break;
+      case "sections":
+        if (destination.droppableId === "sections") break;
+        const copied = copyItem(sectionsAPI, arrangements, source, destination);
+        setArrangements([...copied]);
+        break;
+      default:
+        break;
+    }
+    playUp();
+  };
+  const addPosition = arrangements => {
+    const data = Array.from(arrangements);
+    const added = data.map((arr, idx) => {
+      const secId = arr.sectionId;
+      return arr.id
+        ? {
+            id: arr.id,
+            section: secId,
+            position: idx
+          }
+        : {
+            section: secId,
+            position: idx
+          };
+    });
+
+    return added;
+  };
+  const handleSubmit = async projectId => {
+    const withPosition = addPosition(arrangements);
+    console.log("added", withPosition);
+    try {
+      await ColabAPI.updatedProjectArrangement(projectId, { data: withPosition });
+      setSuccess(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  return (
+    <div>
+      <DragDropContext onDragStart={playDown} onDragEnd={handleDragEnd}>
+        <Container>
+          <SectionsSource sections={sectionsAPI} />
+          <SectionsDest sections={arrangements} remove={removeItem} />
+        </Container>
+      </DragDropContext>
+      <ToolBar submit={handleSubmit} projectId={projectId} />
+      {success && (
+        <div className="container text-center mt-4">
+          <Alert
+            variant="success"
+            onClose={() => setSuccess(false)}
+            dismissible
+            className="mt-2 mb-0"
+          >
+            Arrangement Successfully Updated!
+          </Alert>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default Arrangement;
