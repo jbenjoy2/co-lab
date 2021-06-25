@@ -75,6 +75,11 @@ class ColabAPI {
     let response = await this.request(`arrangements/${projectId}`, data, "put");
     return response;
   }
+
+  static async createNewProject(title, owner) {
+    let response = await this.request("projects/new", { title, owner }, "post");
+    return response.newProject;
+  }
   static async updatedProject(projectId, data) {
     let response = await this.request(`projects/${projectId}`, data, "patch");
     return response;

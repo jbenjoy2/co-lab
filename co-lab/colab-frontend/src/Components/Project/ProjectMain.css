@@ -8,6 +8,10 @@
 }
 .ProjectMain-title {
   font-family: "Abel", sans-serif;
+  display: inline-block;
+}
+.ProjectMain-title:hover {
+  cursor: pointer;
 }
 
 .ProjectMain {

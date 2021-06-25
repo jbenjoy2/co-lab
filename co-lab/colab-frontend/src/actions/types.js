@@ -1,5 +1,7 @@
 export const GET_CURRENT_USER = "GET_CURRENT_USER";
 export const UDPATE_USER = "UPDATE_USER";
+export const ADD_USER_PROJECT = "ADD_USER_PROJECT";
+export const UPDATE_USER_PROJECT = "UPDATE_USER_PROJECT";
 export const FIND_USERS = "FIND_USERS";
 export const LOGIN_USER = "LOGIN_USER";
 export const LOGOUT_USER = "LOGOUT_USER";

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useHistory } from "react-router-dom";
 import Logo from "../Arrangement/colabSVG.svg";
 import "./Navbar.css";
 import { Navbar, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import ColabAPI from "../../api/colabApi";
 function Navigation({ logout }) {
   const currentUser = useSelector(st => st.user.currentUser);
-  const [collapse, setCollapse] = useState(false);
+
   function loggedInNav() {
     return (
       //   <ul className="navbar-nav ml-auto">
@@ -40,11 +41,7 @@ function Navigation({ logout }) {
                 Profile
               </NavLink>
             </Nav.Link>
-            <Nav.Link>
-              <NavLink className="nav-link" to="/rhymetest">
-                Project
-              </NavLink>
-            </Nav.Link>
+
             <Nav.Link>
               <Link className="nav-link" to="/" onClick={logout}>
                 Log out

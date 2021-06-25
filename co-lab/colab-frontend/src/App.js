@@ -12,6 +12,7 @@ import LoadingSpinner from "./Components/auth/LoadingSpinner";
 function App() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { projects } = useSelector(st => st.user.currentUser);
   const [token, setToken] = useLocalStorage("colab-token", null);
   const [infoLoaded, setInfoLoaded] = useState(false);
   useEffect(() => {

@@ -2,8 +2,14 @@ import React from "react";
 import CardList from "./CardList";
 import { useSelector } from "react-redux";
 import "./UserOwner.css";
+import moment from "moment";
 function UserOwner() {
   const { projects } = useSelector(st => st.user.currentUser);
+  projects.sort(
+    (a, b) =>
+      moment(b.updatedAt, "MMM D, YYYY [at] h:mmA") - moment(a.updatedAt, "MMM D, YYYY [at] h:mmA")
+  );
+
   const owned = projects.filter(p => p.owner);
 
   return (
