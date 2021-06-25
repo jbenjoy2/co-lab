@@ -11,6 +11,7 @@ const {
   reqIDs,
   projIDs
 } = require("./_commonTestFuncs");
+const { updateQuery } = require("../helperFuncs/sql");
 
 beforeAll(beforeAllCommon);
 beforeEach(beforeEachCommon);
@@ -282,6 +283,70 @@ describe("remove", () => {
   it("should throw not found error if username doesn't exist", async () => {
     try {
       await User.remove("fakeuser");
+    } catch (error) {
+      expect(error instanceof NotFoundError).toBeTruthy();
+    }
+  });
+});
+
+// <---------------------update------------>
+describe("update", () => {
+  it("should update a given user with new firstName", async () => {
+    const updateData = {
+      firstName: "New"
+    };
+    let user = await User.update("u1", updateData);
+    expect(user).toEqual({
+      username: "u1",
+      lastName: expect.any(String),
+      email: expect.any(String),
+      ...updateData
+    });
+  });
+  it("should update a given user with new lastName", async () => {
+    const updateData = {
+      lastName: "New"
+    };
+    let user = await User.update("u1", updateData);
+    expect(user).toEqual({
+      username: "u1",
+      firstName: expect.any(String),
+      email: expect.any(String),
+      ...updateData
+    });
+  });
+  it("should update a given user with new email", async () => {
+    const updateData = {
+      email: "new@test.com"
+    };
+    let user = await User.update("u1", updateData);
+    expect(user).toEqual({
+      username: "u1",
+      firstName: expect.any(String),
+      lastName: expect.any(String),
+      ...updateData
+    });
+  });
+  it("should update a given user with multiple parameters", async () => {
+    const updateData = {
+      firstName: "New",
+      lastName: "Last",
+      email: "new@test.com"
+    };
+    let user = await User.update("u1", updateData);
+    expect(user).toEqual({
+      username: "u1",
+      ...updateData
+    });
+  });
+  it("fails with not found if no user", async () => {
+    const updateData = {
+      firstName: "New",
+      lastName: "Last",
+      email: "new@test.com"
+    };
+    try {
+      let user = await User.update("wrong", updateData);
     } catch (error) {
       expect(error instanceof NotFoundError).toBeTruthy();
     }

@@ -278,6 +278,64 @@ describe("POST /users/login", () => {
   });
 });
 
+// <----------------------- PATCH /users/:username ----------->
+describe("PATCH /users/:username", () => {
+  it("should update a project with a valid user token, username, and update data", async () => {
+    const response = await request(app)
+      .patch(`/users/testuser1`)
+      .set("authorization", `Bearer ${u1token}`)
+      .send({
+        firstName: "New",
+        lastName: "Newlast",
+        email: "new@test.com"
+      });
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toEqual({
+      user: {
+        username: "testuser1",
+        firstName: "New",
+        lastName: "Newlast",
+        email: "new@test.com"
+      }
+    });
+  });
+  it("fails with unauth if not correct user", async () => {
+    const response = await request(app)
+      .patch(`/users/testuser1`)
+      .set("authorization", `Bearer ${u2token}`)
+      .send({
+        firstName: "New",
+        lastName: "Newlast",
+        email: "new@test.com"
+      });
+    expect(response.statusCode).toEqual(401);
+  });
+  it("fails with unauth if not logged in", async () => {
+    const response = await request(app)
+      .patch(`/users/testuser1`)
+      .send({
+        firstName: "New",
+        lastName: "Newlast",
+        email: "new@test.com"
+      });
+    expect(response.statusCode).toEqual(401);
+  });
+  it("fails with notfound if no such user", async () => {
+    // make dummy token
+    const dummyUser = { username: "notauser" };
+    const dummyToken = tokenFactory(dummyUser);
+    const response = await request(app)
+      .patch(`/users/notauser`)
+      .set("authorization", `Bearer ${dummyToken}`)
+      .send({
+        firstName: "New",
+        lastName: "Newlast",
+        email: "new@test.com"
+      });
+    expect(response.statusCode).toEqual(404);
+  });
+});
+
 // <----------------------- DELETE /users/:username ------->
 describe("DELETE /users/:username", () => {
   it("should work for correct user", async () => {

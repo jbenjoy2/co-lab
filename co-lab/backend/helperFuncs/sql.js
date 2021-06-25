@@ -1,7 +1,7 @@
 const db = require("../db");
 const { BadRequestError } = require("../expressError");
 
-function projectUpdateQuery(rowsToUpdate, javascript) {
+function updateQuery(rowsToUpdate, javascript) {
   const updateKeys = Object.keys(rowsToUpdate);
 
   // convert javascript object to parameterized sql query
@@ -26,4 +26,4 @@ async function arrangementProjectUpdate(projectId) {
   return updated;
 }
 
-module.exports = { projectUpdateQuery, arrangementProjectUpdate };
+module.exports = { updateQuery, arrangementProjectUpdate };

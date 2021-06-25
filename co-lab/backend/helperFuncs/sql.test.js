@@ -1,18 +1,18 @@
 const db = require("../db");
 const bcrypt = require("bcrypt");
-const { projectUpdateQuery, arrangementProjectUpdate } = require("./sql");
+const { updateQuery, arrangementProjectUpdate } = require("./sql");
 const { BadRequestError } = require("../expressError");
 
 describe("test project partial update helper", () => {
   it("should take in one update field", () => {
-    const update = projectUpdateQuery({ keyName: "value" }, { keyName: "key_name" });
+    const update = updateQuery({ keyName: "value" }, { keyName: "key_name" });
     expect(update).toEqual({
       setTerms: `"key_name"=$1`,
       setVals: ["value"]
     });
   });
   it("should take in multiple update fields", () => {
-    const update = projectUpdateQuery(
+    const update = updateQuery(
       { keyOne: "val1", keyTwo: "val2", keyThree: "val3" },
       { keyOne: "key_one", keyTwo: "key_two", keyThree: "key_three" }
     );
@@ -22,7 +22,7 @@ describe("test project partial update helper", () => {
     });
   });
   it("should respond with empty keys for no update fields", () => {
-    const update = projectUpdateQuery({});
+    const update = updateQuery({});
     expect(update).toEqual({
       setTerms: "",
       setVals: []

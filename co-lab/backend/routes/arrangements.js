@@ -28,6 +28,7 @@ router.post("/:projectId", checkProjectOwner, async (req, res, next) => {
 });
 
 router.put("/:projectId", checkProjectContributor, async (req, res, next) => {
+
   try {
     const validator = jsonschema.validate(req.body, arrangementUpdateSchema);
     if (!validator.valid) {

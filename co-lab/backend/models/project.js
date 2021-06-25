@@ -1,7 +1,7 @@
 const db = require("../db");
 const { NotFoundError, BadRequestError, UnauthorizedError } = require("../expressError");
 const moment = require("moment");
-const { projectUpdateQuery } = require("../helperFuncs/sql");
+const { updateQuery } = require("../helperFuncs/sql");
 const Arrangement = require("./arrangement");
 
 class Project {
@@ -78,7 +78,7 @@ class Project {
     const javascript = {
       updatedAt: "updated_at"
     };
-    let { setTerms, setVals } = projectUpdateQuery(data, javascript);
+    let { setTerms, setVals } = updateQuery(data, javascript);
 
     setTerms =
       setTerms.length === 0

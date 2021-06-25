@@ -15,7 +15,7 @@ function getDatabaseUri() {
 }
 
 const BCRYPT_WORK_FACTOR = process.env.NODE_ENV === "test" ? 1 : 13;
-
+const QUOTE_KEY = process.env.QUOTE_KEY;
 console.log("Colab Config:".green);
 console.log("SECRET_KEY:".red, SECRET_KEY);
 console.log("PORT:".yellow, PORT.toString());
@@ -27,5 +27,6 @@ module.exports = {
   SECRET_KEY,
   PORT,
   BCRYPT_WORK_FACTOR,
-  getDatabaseUri
+  getDatabaseUri,
+  QUOTE_KEY
 };

@@ -7,6 +7,7 @@ const { NotFoundError, BadRequestError, UnauthorizedError } = require("../expres
 const moment = require("moment");
 
 const { BCRYPT_WORK_FACTOR } = require("../config.js");
+const { updateQuery } = require("../helperFuncs/sql");
 
 class User {
   // authenticate- login route takes in username/password and compares to database; returns user if found, or error if not
@@ -135,8 +136,10 @@ class User {
         FROM projects AS p
         LEFT JOIN cowrites AS c
         ON p.id = c.project_id
+        
             WHERE 
-              c.username = $1`,
+              c.username = $1 
+              ORDER BY p.updated_at DESC`,
       [username]
     );
 
@@ -145,11 +148,33 @@ class User {
       let updated = r["updatedAt"];
       r["updatedAt"] = moment(updated)
         .local()
-        .format("MMM DD, YYYY [at] h:mmA");
+        .format("MMM D, YYYY [at] h:mmA");
     });
     foundUser.projects = projectsRes.rows;
 
     return foundUser;
+  }
+
+  static async update(username, data) {
+    const javascript = {
+      firstName: "first_name",
+      lastName: "last_name"
+    };
+
+    const { setTerms, setVals } = updateQuery(data, javascript);
+    const usernameIdx = "$" + (setVals.length + 1);
+
+    const sql = `UPDATE users 
+                SET ${setTerms} 
+                WHERE username=${usernameIdx} 
+                RETURNING username, first_name AS "firstName", last_name AS "lastName", email`;
+
+    const result = await db.query(sql, [...setVals, username]);
+
+    const user = result.rows[0];
+
+    if (!user) throw new NotFoundError(`No user: ${username}`);
+    return user;
   }
 
   static async remove(username) {

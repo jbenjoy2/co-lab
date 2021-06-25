@@ -75,6 +75,15 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
+router.patch("/:username", checkCorrectUser, async (req, res, next) => {
+  try {
+    const user = await User.update(req.params.username, req.body);
+    return res.json({ user });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 router.delete("/:username", checkCorrectUser, async (req, res, next) => {
   try {
     await User.remove(req.params.username);
