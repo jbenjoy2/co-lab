@@ -22,15 +22,20 @@ function RegisterForm({ register }) {
     lastName: "",
     email: ""
   });
+  const [formErrors, setFormErrors] = useState([]);
 
   /** Handle form submit:
    *
    * Calls login func prop and, if successful, redirect to /companies.
    */
-  function handleSubmit(evt) {
+  async function handleSubmit(evt) {
     evt.preventDefault();
-    console.log("data sent!", formData);
-    register(formData);
+    const result = await register(formData);
+    if (result.success) {
+      history.push("/dashboard");
+    } else {
+      setFormErrors(result.errors);
+    }
   }
 
   /** Update form data field */

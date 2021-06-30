@@ -11,7 +11,6 @@ function Usertest() {
       async function fetchUsers() {
         try {
           let allUsers = await ColabAPI.getAllSections();
-          console.log(allUsers);
           setUsers(allUsers);
         } catch (error) {
           if (error.status === 401) setErrors(errors => [...errors, error.status]);

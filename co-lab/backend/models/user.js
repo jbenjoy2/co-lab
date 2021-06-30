@@ -143,15 +143,10 @@ class User {
       [username]
     );
 
-    // ADJUST DISPLAY OF UPDATED TIME TO BE LOCAL TIMEZONE
-    projectsRes.rows.forEach(r => {
-      let updated = r["updatedAt"];
-      r["updatedAt"] = moment(updated)
-        .local()
-        .format("MMM D, YYYY [at] h:mmA");
-    });
-    foundUser.projects = projectsRes.rows;
+    //
 
+    foundUser.projects = projectsRes.rows;
+    console.log("foundUser", foundUser);
     return foundUser;
   }
 

@@ -4,7 +4,9 @@ import {
   GET_CURRENT_USER,
   UDPATE_USER,
   UPDATE_USER_PROJECT,
-  ADD_USER_PROJECT
+  ADD_USER_PROJECT,
+  ADD_USER_COWRITE,
+  DELETE_USER_PROJECT
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -40,13 +42,27 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         }
       };
     }
+    case ADD_USER_COWRITE: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          projects: [
+            ...state.currentUser.projects,
+            {
+              ...action.project,
+              owner: false
+            }
+          ]
+        }
+      };
+    }
     case UPDATE_USER_PROJECT: {
       const otherProjs = state.currentUser.projects.filter(proj => proj.id !== action.project.id);
-      console.log(action.project.id);
+
       const isOwner = state.currentUser.projects.filter(proj => proj.id === action.project.id)[0]
         .owner;
-      console.log("not this one", otherProjs);
-      console.log("is owner", isOwner);
+
       return {
         ...state,
         currentUser: {
@@ -61,6 +77,17 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         }
       };
     }
+    case DELETE_USER_PROJECT: {
+      const otherProjs = state.currentUser.projects.filter(proj => proj.id !== action.projectId);
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          projects: [...otherProjs]
+        }
+      };
+    }
+
     case LOGOUT_USER:
       return { ...state, currentUser: {} };
     default:

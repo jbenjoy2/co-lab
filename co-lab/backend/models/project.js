@@ -58,9 +58,6 @@ class Project {
 
     const foundProject = result.rows[0];
     if (!foundProject) throw new NotFoundError(`Project not found`);
-    foundProject.updatedAt = moment(foundProject.updatedAt)
-      .local()
-      .format("MMM D, YYYY [at] h:mma");
 
     const contributorsQry = await db.query(`SELECT username FROM cowrites WHERE project_id=$1`, [
       id
@@ -69,6 +66,23 @@ class Project {
     foundProject.contributors = contributorsQry.rows.map(r => {
       return r.username;
     });
+
+    return foundProject;
+  }
+  static async getBasicDetails(id) {
+    const result = await db.query(
+      `SELECT     id,
+                  title,
+                  notes,
+                  owner, 
+                  updated_at AS "updatedAt"
+            FROM projects
+            WHERE id=$1`,
+      [id]
+    );
+
+    const foundProject = result.rows[0];
+    if (!foundProject) throw new NotFoundError(`Project not found`);
 
     return foundProject;
   }
@@ -99,9 +113,6 @@ class Project {
     const project = res.rows[0];
 
     if (!project) throw new NotFoundError("Project not found! Could not update");
-    project.updatedAt = moment(project.updatedAt)
-      .local()
-      .format("MMM D, YYYY [at] h:mma");
 
     return project;
   }
@@ -115,12 +126,15 @@ class Project {
         [id, username]
       );
       const deleted = qry.rows[0];
+      console.log(deleted);
       if (!deleted)
         throw new BadRequestError(
           `User with username ${username} not a cowriter on projectd with id ${id}`
         );
       if (deleted.isOwner === true) {
         await db.query(`DELETE FROM projects WHERE id=$1`, [id]);
+      } else {
+        await db.query(`DELETE FROM requests WHERE project_id=$1 AND recipient=$2`, [id, username]);
       }
     } catch (error) {
       console.log("error", error);

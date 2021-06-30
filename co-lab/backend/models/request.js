@@ -16,20 +16,32 @@ class Request {
     const query = await db.query(
       `
             SELECT id AS "requestID", sender, 
-            sent_at AS "sentAt"
+            sent_at AS "sentAt", project_id AS "projectId", accepted
             FROM requests
             WHERE recipient = $1`,
       [username]
     );
 
     // adjust sentAt time format
-    query.rows.forEach(row => {
-      let sent = row["sentAt"];
-      row["sentAt"] = moment(sent)
-        .local()
-        .format("M-DD-YYYY h:mmA");
-    });
 
+    return query.rows;
+  }
+
+  static async getRequestsByProjectId(projectId) {
+    // check for invalid project
+    const projCheck = await db.query(`select title from projects where id=$1`, [projectId]);
+    const proj = projCheck.rows[0];
+    if (!proj) {
+      throw new NotFoundError("Could not find project");
+    }
+    const query = await db.query(
+      `
+      SELECT id AS "requestID", sender,recipient, 
+            sent_at AS "sentAt", accepted
+            FROM requests
+            WHERE project_id= $1`,
+      [projectId]
+    );
     return query.rows;
   }
   static async getSingleRequest(id) {

@@ -23,6 +23,19 @@ router.get("/:username", checkCorrectUser, async (req, res, next) => {
     return next(error);
   }
 });
+
+router.get("/projects/:projectId", async (req, res, next) => {
+  const { projectId } = req.params;
+  try {
+    const projRequests = await Request.getRequestsByProjectId(projectId);
+    if (!projRequests.length) {
+      return res.json("No requests for this project!");
+    }
+    return res.json({ projRequests });
+  } catch (error) {
+    return next(error);
+  }
+});
 router.post("/:username/new", checkCorrectUser, async (req, res, next) => {
   try {
     const validator = jsonschema.validate(req.body, requestNewSchema);

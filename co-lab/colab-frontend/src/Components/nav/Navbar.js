@@ -43,7 +43,7 @@ function Navigation({ logout }) {
             </Nav.Link>
 
             <Nav.Link>
-              <Link className="nav-link" to="/" onClick={logout}>
+              <Link className="nav-link" to="/login" onClick={logout}>
                 Log out
               </Link>
             </Nav.Link>
@@ -59,12 +59,17 @@ function Navigation({ logout }) {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
             <Nav.Link eventKey="0">
-              <NavLink className="nav-link" to="/login">
-                Login
+              <NavLink className="nav-link" exact to="/">
+                Home
               </NavLink>
             </Nav.Link>
             <Nav.Link eventKey="1">
-              <NavLink className="nav-link" to="/register">
+              <NavLink className="nav-link" exact to="/login">
+                Login
+              </NavLink>
+            </Nav.Link>
+            <Nav.Link eventKey="2">
+              <NavLink className="nav-link" exact to="/register">
                 Sign Up
               </NavLink>
             </Nav.Link>

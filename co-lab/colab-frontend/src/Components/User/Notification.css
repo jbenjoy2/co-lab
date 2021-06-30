@@ -1,18 +1,40 @@
-.Notification-bell {
-  position: relative;
-
-  border: none;
-  outline: none;
-  border-radius: 50%;
-  z-index: 1;
+.RequestCard {
+  max-width: 500px;
+  height: 15rem;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border: 1px solid #215d6d;
+  border-radius: 5px;
+  margin-top: 2rem;
 }
-.Notification-badge {
-  position: absolute;
-  top: -2px;
-  right: -8px;
-  z-index: 50;
-  height: 10px;
+@media (min-width: 720px) {
+  .RequestCard {
+    margin-top: 0;
+  }
+}
+@media (min-width: 662px) {
+  .RequestCard {
+    margin-left: 2rem;
+  }
+}
+
+.RequestCard-requests {
+  height: 10rem;
+  overflow-y: scroll;
+  border-radius: 15px;
+}
+
+.RequestCard-requests::-webkit-scrollbar {
   width: 10px;
-  background-color: red;
-  border-radius: 50%;
+  height: 15px;
+  background-color: #215c6d3f;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+.RequestCard-requests::-webkit-scrollbar-thumb {
+  width: 20px;
+  background-color: #215d6d;
+  border: 1px solid #174450;
+  border-radius: 10px;
 }

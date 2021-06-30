@@ -3,7 +3,9 @@ import {
   LOGIN_USER,
   LOGOUT_USER,
   UDPATE_USER,
-  UPDATE_USER_PROJECT
+  UPDATE_USER_PROJECT,
+  DELETE_USER_PROJECT,
+  ADD_USER_COWRITE
 } from "./types";
 import Api from "../api/colabApi";
 
@@ -47,6 +49,13 @@ const addUserProject = project => {
     project
   };
 };
+
+export function addUserCowrite(project) {
+  return {
+    type: ADD_USER_COWRITE,
+    project
+  };
+}
 export function updateUserProjectApi(projectId, data) {
   return async function(dispatch) {
     const res = await Api.updatedProject(projectId, data);
@@ -60,6 +69,27 @@ const updateUserProject = project => {
     project
   };
 };
+
+export function deleteUserProjectApi(projectId) {
+  return async function(dispatch) {
+    const res = await Api.deleteProject(projectId);
+    return dispatch(deleteUserProject(+res.deleted));
+  };
+}
+
+const deleteUserProject = projectId => {
+  return {
+    type: DELETE_USER_PROJECT,
+    projectId
+  };
+};
+export function leaveProjectApi(projectId, username) {
+  projectId = +projectId;
+  return async function(dispatch) {
+    const res = await Api.leaveProject({ projectId, username });
+    return dispatch(deleteUserProject(+res.removed.projectId));
+  };
+}
 
 export function logoutUser() {
   return function(dispatch) {

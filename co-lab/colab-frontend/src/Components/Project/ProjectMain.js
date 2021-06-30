@@ -7,8 +7,10 @@ import Quotetest from "../Quote/QuoteTest";
 import Rhymetest from "../Rhymes/Rhymetest";
 import "./ProjectMain.css";
 import ProjectNotesForm from "./ProjectNotesForm";
-import { useDispatch } from "react-redux";
-import { updateUserProjectApi } from "../../actions/user";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserProjectApi, deleteUserProjectApi, leaveProjectApi } from "../../actions/user";
+import UserSearch from "./UserSearch";
+
 function ProjectMain() {
   const dispatch = useDispatch();
   const { projectId } = useParams();
@@ -19,11 +21,11 @@ function ProjectMain() {
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(project.title);
   const [errors, setErrors] = useState([]);
+  const { currentUser } = useSelector(st => st.user);
   useEffect(() => {
     const getProject = async id => {
       try {
         const proj = await ColabAPI.getProject(id);
-        console.log("current project", proj);
         setProject(proj);
         setTitle(proj.title);
         setCowriters(proj.contributors.filter(c => c !== proj.owner));
@@ -54,7 +56,7 @@ function ProjectMain() {
         notes: notes,
         title: title
       });
-      console.log("res", res);
+
       const updateProjectInStore = updateUserProjectApi(projectId, {
         notes: notes,
         title: title
@@ -69,7 +71,26 @@ function ProjectMain() {
     }
   };
 
+  const deleteProject = async projectId => {
+    try {
+      const deleteProj = deleteUserProjectApi(projectId);
+      await deleteProj(dispatch);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const leaveProject = async projectId => {
+    try {
+      const leaveProj = leaveProjectApi(projectId, currentUser.username);
+      await leaveProj(dispatch);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (loading) return <LoadingSpinner />;
+
   return (
     <>
       <div className="text-center">
@@ -123,6 +144,7 @@ function ProjectMain() {
       <div className="container-fluid row justify-content-around">
         <Rhymetest />
         <Quotetest />
+        <UserSearch projectId={projectId} owner={project.owner} />
         <Link className="btn btn-primary" to={`/${projectId}/arrangement-lab`}>
           Arrangement Lab
         </Link>
@@ -140,7 +162,14 @@ function ProjectMain() {
             </Alert>
           </div>
         )}
-        <ProjectNotesForm projectId={projectId} notes={project.notes} save={saveProject} />
+        <ProjectNotesForm
+          projectId={projectId}
+          notes={project.notes}
+          owner={project.owner}
+          save={saveProject}
+          delete={deleteProject}
+          leave={leaveProject}
+        />
       </div>
     </>
   );

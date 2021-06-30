@@ -7,24 +7,6 @@
   font-weight: bold;
   color: black;
 }
-
-.dropdown-toggle.nav-link:after {
-  display: none;
-}
-
-.nav-link.nav-item.dropdown {
-  display: flex;
-  height: 100%;
-  align-items: center;
-}
-
-.dropdown-menu.show {
-  background-color: rgba(0, 0, 0, 0.125);
-  width: 25rem;
-}
-.dropdown-item {
-  color: wheat !important;
-}
-.dropdown-item:hover {
-  background-color: #343a3f !important;
+.dropdown-divider {
+  border-top: 1px solid #465055 !important;
 }

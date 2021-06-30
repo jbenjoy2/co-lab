@@ -62,7 +62,6 @@ const Clone = styled(Container)`
 `;
 
 function ArrangementPiece({ section, index, source, remove }) {
-  console.log(section);
   const [playCrumple] = useSound(crumple);
   return (
     <Draggable key={section.dragId} draggableId={section.dragId} index={index}>

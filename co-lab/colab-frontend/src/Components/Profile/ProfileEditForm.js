@@ -30,7 +30,7 @@ function ProfileEditForm({ user, updateUser }) {
       lastName: formData.lastName,
       email: formData.email
     };
-    console.log("profile data", profileData);
+
     const username = formData.username;
     let updated;
     try {

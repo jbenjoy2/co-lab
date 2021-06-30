@@ -20,7 +20,6 @@ function Rhymetest(props) {
       const foundRhymes = await ColabAPI.getRhymes(word);
       setRhymes(foundRhymes);
       setLoading(false);
-      console.log(foundRhymes);
     } catch (error) {
       console.log(error);
     }

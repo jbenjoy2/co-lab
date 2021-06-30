@@ -30,6 +30,7 @@ function Arrangement() {
   const [sectionsAPI, setSectionsAPI] = useState([]);
   const [arrangements, setArrangements] = useState([]);
   const [success, setSuccess] = useState(false);
+  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     async function getSections() {
@@ -74,14 +75,14 @@ function Arrangement() {
     const destCopy = Array.from(dest);
 
     const itemToCopy = sourceCopy[droppableSource.index];
-    console.log("ITEM", itemToCopy);
+
     destCopy.splice(droppableDest.index, 0, { ...itemToCopy, dragId: uuid() });
 
     return destCopy;
   };
   const move = (source, destination, droppableSource, droppableDestination) => {
     const sourceClone = Array.from(source);
-    console.log("moving");
+
     const destClone = Array.from(destination);
     const removed = sourceClone.splice(droppableSource.index, 1);
 
@@ -140,12 +141,13 @@ function Arrangement() {
   };
   const handleSubmit = async projectId => {
     const withPosition = addPosition(arrangements);
-    console.log("added", withPosition);
+
     try {
       await ColabAPI.updatedProjectArrangement(projectId, { data: withPosition });
       setSuccess(true);
     } catch (error) {
       console.error(error);
+      setErrors(errors => [...errors, error]);
     }
   };
   return (
@@ -166,6 +168,13 @@ function Arrangement() {
             className="mt-2 mb-0"
           >
             Arrangement Successfully Updated!
+          </Alert>
+        </div>
+      )}
+      {errors.length > 0 && (
+        <div className="container text-center mt-4">
+          <Alert variant="danger" onClose={() => setErrors([])} dismissible className="mt-2 mb-0">
+            Arrangement could not be updated
           </Alert>
         </div>
       )}

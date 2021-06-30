@@ -3,6 +3,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import "./ProjectCard.css";
 import ColabAPI from "../../api/colabApi";
+import moment from "moment";
 function ProjectCard({ id, title, updatedAt, owner }) {
   const [projOwner, setProjOwner] = useState("");
   useEffect(() => {
@@ -16,6 +17,7 @@ function ProjectCard({ id, title, updatedAt, owner }) {
     }
     getProject(id);
   }, []);
+
   return (
     <div className="ProjectCard">
       <div className="ProjectCard-top">
@@ -25,7 +27,11 @@ function ProjectCard({ id, title, updatedAt, owner }) {
         {!owner && <div className="ProjectCard-owner mt-1">Owner: {projOwner}</div>}
         <div className="ProjectCard-updated mb-1">
           <small>Last updated:</small>
-          <small className="ProjectCard-small">{updatedAt}</small>
+          <small className="ProjectCard-small">
+            {moment(updatedAt)
+              .local()
+              .format("MMM D, YYYY [at] h:mmA")}
+          </small>
         </div>
       </div>
     </div>

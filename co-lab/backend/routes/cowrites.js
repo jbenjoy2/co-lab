@@ -18,7 +18,7 @@ router.delete("/", checkProjectContributor, async (req, res, next) => {
 
     const { projectId, username } = req.body;
     const leave = await Project.leave(projectId, username);
-    return res.json({ removed: req.body.username });
+    return res.json({ removed: { username: req.body.username, projectId: req.body.projectId } });
   } catch (error) {
     return next(error);
   }

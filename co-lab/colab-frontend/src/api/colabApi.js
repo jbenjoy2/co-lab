@@ -22,14 +22,14 @@ class ColabAPI {
   }
 
   //   user API routes
-  static async getAllUsers() {
-    let response = await this.request("users");
-    console.log("response", response);
+  static async getAllUsers(username = "") {
+    const data = { username };
+    let response = await this.request("users", data);
     return response;
   }
   static async getAllSections() {
     let response = await this.request("sections");
-    console.log("response", response);
+
     return response.sections;
   }
   static async getUser(username) {
@@ -52,6 +52,11 @@ class ColabAPI {
 
   static async getProject(id) {
     let response = await this.request(`projects/${id}`);
+    return response.project;
+  }
+
+  static async getProjectDetails(id) {
+    let response = await this.request(`projects/${id}/basic`);
     return response.project;
   }
   static async getQuote() {
@@ -82,6 +87,39 @@ class ColabAPI {
   }
   static async updatedProject(projectId, data) {
     let response = await this.request(`projects/${projectId}`, data, "patch");
+    return response;
+  }
+
+  static async deleteProject(projectId) {
+    let response = await this.request(`projects/${projectId}`, {}, "delete");
+    return response;
+  }
+
+  static async leaveProject(data) {
+    let response = await this.request(`cowrites`, data, "delete");
+    return response;
+  }
+
+  static async getUserRequests(username) {
+    let response = await this.request(`requests/${username}`);
+    return response;
+  }
+  static async getProjectRequests(projectId) {
+    let response = await this.request(`requests/projects/${projectId}`);
+    return response;
+  }
+  static async makeRequest(sender, data) {
+    let response = await this.request(`requests/${sender}/new`, data, "post");
+    return response;
+  }
+  static async acceptRequest(requestId) {
+    const data = { response: "accept" };
+    let response = await this.request(`requests/${requestId}`, data, "put");
+    return response;
+  }
+  static async rejectRequest(requestId) {
+    const data = { response: "reject" };
+    let response = await this.request(`requests/${requestId}`, data, "put");
     return response;
   }
 }

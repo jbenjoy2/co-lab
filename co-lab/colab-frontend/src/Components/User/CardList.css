@@ -1,6 +1,6 @@
 .CardList {
   display: flex;
-  min-width: 135px;
+  min-width: 200px;
   max-width: 50%;
   overflow-x: scroll;
   padding: 25px;
@@ -8,7 +8,7 @@
   border: 5px solid transparent;
   border-radius: 5px;
   background-color: #3597b1;
-  margin-top: 2em;
+  margin-top: 1em;
 }
 
 .CardList::-webkit-scrollbar {

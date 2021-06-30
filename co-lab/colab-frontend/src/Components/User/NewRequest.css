@@ -1,0 +1,103 @@
+.btn-cancel {
+  color: #ffffff !important;
+  background-color: #f47b33 !important;
+  border-color: #f47b33 !important;
+}
+
+.btn-cancel:hover,
+.btn-cancel:focus,
+.btn-cancel:active,
+.btn-cancel.active,
+.open .dropdown-toggle.btn-cancel {
+  color: #ffffff !important;
+  background-color: #c76125 !important;
+  border-color: #c76125 !important;
+}
+
+.btn-cancel:active,
+.btn-cancel.active,
+.open .dropdown-toggle.btn-cancel {
+  background-image: none;
+}
+
+.btn-cancel.disabled,
+.btn-cancel[disabled],
+fieldset[disabled] .btn-cancel,
+.btn-cancel.disabled:hover,
+.btn-cancel[disabled]:hover,
+fieldset[disabled] .btn-cancel:hover,
+.btn-cancel.disabled:focus,
+.btn-cancel[disabled]:focus,
+fieldset[disabled] .btn-cancel:focus,
+.btn-cancel.disabled:active,
+.btn-cancel[disabled]:active,
+fieldset[disabled] .btn-cancel:active,
+.btn-cancel.disabled.active,
+.btn-cancel[disabled].active,
+fieldset[disabled] .btn-cancel.active {
+  background-color: #f47b33;
+  border-color: #f47b33;
+}
+
+.btn-cancel .badge {
+  color: #f47b33;
+  background-color: #ffffff;
+}
+
+.btn-accept {
+  color: #ffffff !important;
+  background-color: #215d6d !important;
+  border-color: #215d6d !important;
+}
+
+.btn-accept:hover,
+.btn-accept:focus,
+.btn-accept:active,
+.btn-accept.active,
+.open .dropdown-toggle.btn-accept {
+  color: #ffffff !important;
+  background-color: #16424f !important;
+  border-color: #16424f !important;
+}
+
+.btn-accept:active,
+.btn-accept.active,
+.open .dropdown-toggle.btn-accept {
+  background-image: none;
+}
+
+.btn-accept.disabled,
+.btn-accept[disabled],
+fieldset[disabled] .btn-accept,
+.btn-accept.disabled:hover,
+.btn-accept[disabled]:hover,
+fieldset[disabled] .btn-accept:hover,
+.btn-accept.disabled:focus,
+.btn-accept[disabled]:focus,
+fieldset[disabled] .btn-accept:focus,
+.btn-accept.disabled:active,
+.btn-accept[disabled]:active,
+fieldset[disabled] .btn-accept:active,
+.btn-accept.disabled.active,
+.btn-accept[disabled].active,
+fieldset[disabled] .btn-accept.active {
+  background-color: #215d6d;
+  border-color: #215d6d;
+}
+
+.btn-accept .badge {
+  color: #215d6d;
+  background-color: #ffffff;
+}
+
+.accepted-true {
+  background-color: lightgreen !important;
+}
+
+.accepted-false {
+  background-color: #f8d7d9 !important;
+}
+
+.NewRequest {
+  border-radius: 15px !important;
+}

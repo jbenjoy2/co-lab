@@ -37,6 +37,16 @@ router.get("/:projectId", checkProjectContributor, async (req, res, next) => {
   }
 });
 
+router.get("/:projectId/basic", async (req, res, next) => {
+  const { projectId } = req.params;
+  try {
+    const project = await Project.getBasicDetails(projectId);
+    return res.json({ project });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 router.patch("/:projectId", checkProjectContributor, async (req, res, next) => {
   try {
     const validator = jsonschema.validate(req.body, projectUpdateSchema);
