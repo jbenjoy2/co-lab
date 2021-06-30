@@ -146,7 +146,7 @@ class User {
     //
 
     foundUser.projects = projectsRes.rows;
-    console.log("foundUser", foundUser);
+
     return foundUser;
   }
 
