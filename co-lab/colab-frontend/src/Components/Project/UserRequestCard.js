@@ -22,9 +22,9 @@ function UserRequestCard({ user, projectId, owner }) {
   }, [status, owner, user.username, projectId]);
 
   const handleClick = async () => {
-    setStatus(true);
     const data = { project_id: +projectId, recipient: user.username };
     await ColabAPI.makeRequest(currentUser.username, data);
+    setStatus(true);
   };
 
   return (
