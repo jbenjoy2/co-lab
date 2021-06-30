@@ -4,7 +4,7 @@ import SectionsSource from "./SectionsSource";
 import SectionsDest from "./SectionsDest";
 import { v4 as uuid } from "uuid";
 import styled from "styled-components";
-import initialData from "../../initial-data";
+
 import up from "./audio/buttonUp.mp3";
 import down from "./audio/buttonDown.mp3";
 import whoosh from "./audio/whoosh.mp3";
@@ -60,7 +60,7 @@ function Arrangement() {
       );
     }
     getProjectArrangement();
-  }, []);
+  }, [projectId]);
 
   const adjustOrder = (arr, startIdx, endIdx) => {
     const arrCopy = [...arr];
@@ -79,20 +79,6 @@ function Arrangement() {
     destCopy.splice(droppableDest.index, 0, { ...itemToCopy, dragId: uuid() });
 
     return destCopy;
-  };
-  const move = (source, destination, droppableSource, droppableDestination) => {
-    const sourceClone = Array.from(source);
-
-    const destClone = Array.from(destination);
-    const removed = sourceClone.splice(droppableSource.index, 1);
-
-    destClone.splice(droppableDestination.index, 0, removed);
-
-    const result = {};
-    result[droppableSource.droppableId] = sourceClone;
-    result[droppableDestination.droppableId] = destClone;
-
-    return result;
   };
 
   const removeItem = dragId => {

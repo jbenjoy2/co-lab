@@ -1,4 +1,4 @@
-import { Alert, OverlayTrigger, Tooltip, Button } from "react-bootstrap";
+import { Alert, OverlayTrigger, Tooltip } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ColabAPI from "../../api/colabApi";
@@ -36,7 +36,7 @@ function ProjectMain() {
     };
     setLoading(true);
     getProject(projectId);
-  }, []);
+  }, [projectId]);
 
   const cowriterString = cowriters.join(", ");
 
@@ -52,7 +52,7 @@ function ProjectMain() {
   const saveProject = async (projectId, notes) => {
     setProject(project => ({ ...project, notes: notes }));
     try {
-      let res = await ColabAPI.updatedProject(projectId, {
+      await ColabAPI.updatedProject(projectId, {
         notes: notes,
         title: title
       });
@@ -95,7 +95,7 @@ function ProjectMain() {
     <>
       <div className="text-center">
         {editing ? (
-          <form className="container w-50 mt-5">
+          <form onSubmit={handleSubmit} className="container w-50 mt-5">
             <input
               type="text"
               name="title"
@@ -105,9 +105,7 @@ function ProjectMain() {
               className="form-control"
               maxLength="25"
             />
-            <button className="btn btn-primary mt-2" onClick={() => setEditing(false)}>
-              Save
-            </button>
+            <button className="btn btn-primary mt-2">Save</button>
           </form>
         ) : (
           // <>

@@ -19,7 +19,7 @@ function UserRequestCard({ user, projectId, owner }) {
       }
     };
     getProjectRequests(projectId);
-  }, [status]);
+  }, [status, owner, user.username, projectId]);
 
   const handleClick = async () => {
     setStatus(true);

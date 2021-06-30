@@ -1,17 +1,14 @@
 import React from "react";
-import { Switch, Route, Redirect, Link } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Arrangement from "../Arrangement/Arrangement";
 import LoadingSpinner from "../auth/LoadingSpinner";
 import LoginForm from "../auth/LoginForm";
 import RegisterForm from "../auth/RegisterForm";
-import CardList from "../User/CardList";
-import ProjectCard from "../User/ProjectCard";
-import Rhymetest from "../Rhymes/Rhymetest";
+
 import UserDashboard from "../User/UserDashboard";
-import UserOwner from "../User/UserOwner";
+
 import Usertest from "../User/Usertest";
-import Quotetest from "../Quote/QuoteTest";
-import ProfileEditForm from "../Profile/ProfileEditForm";
+
 import Protected from "./Protected";
 import Profile from "../Profile/Profile";
 import ProjectMain from "../Project/ProjectMain";

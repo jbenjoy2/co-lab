@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { NavLink, Link, useHistory } from "react-router-dom";
+import React from "react";
+import { NavLink, Link } from "react-router-dom";
 import Logo from "../Arrangement/colabSVG.svg";
 import "./Navbar.css";
 import { Navbar, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import ColabAPI from "../../api/colabApi";
+
 function Navigation({ logout }) {
   const currentUser = useSelector(st => st.user.currentUser);
 

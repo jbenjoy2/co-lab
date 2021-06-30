@@ -3,7 +3,7 @@ import CardList from "./CardList";
 import { useSelector } from "react-redux";
 import "./UserOwner.css";
 import moment from "moment";
-import Moment from "react-moment";
+
 function UserOwner() {
   const { projects } = useSelector(st => st.user.currentUser);
   projects.sort((a, b) => moment(b.updatedAt) - moment(a.updatedAt));

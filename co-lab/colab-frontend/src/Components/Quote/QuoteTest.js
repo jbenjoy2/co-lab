@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import LoadingSpinner from "../auth/LoadingSpinner";
 import useModal from "../../hooks/useModal";

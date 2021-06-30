@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import Dropdown from "react-bootstrap/Dropdown";
-import { DropdownButton } from "react-bootstrap";
+
 import ColabAPI from "../../api/colabApi";
 import { Link } from "react-router-dom";
 import { addUserCowrite } from "../../actions/user";
@@ -19,17 +18,17 @@ function NewRequest({ request }) {
       setProject(res);
     };
     getProject(request.projectId);
-  }, []);
+  }, [request.projectId]);
 
   const handleAccept = async () => {
-    const response = await ColabAPI.acceptRequest(request.requestID);
+    await ColabAPI.acceptRequest(request.requestID);
     setResponded(true);
     setAccepted(true);
     dispatch(addUserCowrite(project));
     setColor("success");
   };
   const handleReject = async () => {
-    const response = await ColabAPI.rejectRequest(request.requestID);
+    await ColabAPI.rejectRequest(request.requestID);
     setResponded(true);
     setAccepted(false);
     setColor("danger");

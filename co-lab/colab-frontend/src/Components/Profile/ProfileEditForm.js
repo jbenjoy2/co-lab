@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+
 import Alert from "react-bootstrap/Alert";
-import ColabAPI from "../../api/colabApi";
-import { useHistory } from "react-router";
 
 function ProfileEditForm({ user, updateUser }) {
-  const { currentUser } = useSelector(st => st.user);
   const [current, setCurrent] = useState(user);
   const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({
@@ -16,7 +13,6 @@ function ProfileEditForm({ user, updateUser }) {
   });
 
   const [formErrors, setFormErrors] = useState([]);
-  const history = useHistory();
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -32,9 +28,9 @@ function ProfileEditForm({ user, updateUser }) {
     };
 
     const username = formData.username;
-    let updated;
+
     try {
-      updated = await updateUser(username, profileData);
+      await updateUser(username, profileData);
       setSuccess(true);
     } catch (error) {
       setFormErrors(error);

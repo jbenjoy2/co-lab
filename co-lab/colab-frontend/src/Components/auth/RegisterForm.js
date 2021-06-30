@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form } from "react-bootstrap";
+
 import { useHistory } from "react-router-dom";
 
 /** Signup form.

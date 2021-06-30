@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function UserSearchForm({ search }) {
+function UserSearchForm({ search, searchTerm }) {
   const [term, setTerm] = useState("");
 
   const handleChange = e => {

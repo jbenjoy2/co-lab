@@ -5,7 +5,7 @@ import useModal from "../../hooks/useModal";
 import { Button } from "react-bootstrap";
 import ColabAPI from "../../api/colabApi";
 import UserSearchForm from "./UserSearchForm";
-import axios from "axios";
+
 import UserRequestCard from "./UserRequestCard";
 import { useSelector } from "react-redux";
 
@@ -51,7 +51,7 @@ function UserSearch({ projectId, owner }) {
         </Modal.Header>
         <Modal.Body className="bg-dark">
           <div>
-            <UserSearchForm search={findUsers} />
+            <UserSearchForm search={findUsers} searchTerm={searchTerm} />
             {loading && <LoadingSpinner />}
             <div style={{ maxHeight: "50vh", overflowY: "scroll" }}>
               {users.length > 0 && (

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import UserCowrite from "./UserCowrite";
 import UserOwner from "./UserOwner";
 import { useSelector, useDispatch } from "react-redux";
 import "./UserDashboard.css";
-import UserAvatar from "./UserAvatar";
+
 import UserDetailsCard from "./UserDetailsCard";
 import Notification from "./Notification";
-import ColabAPI from "../../api/colabApi";
+
 import { useHistory } from "react-router-dom";
 import { addUserProjectApi } from "../../actions/user";
 function UserDashboard() {

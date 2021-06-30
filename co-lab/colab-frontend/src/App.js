@@ -3,16 +3,15 @@ import jwt from "jsonwebtoken";
 import Routes from "./Components/routes/routes";
 import Navbar from "./Components/nav/Navbar";
 import useLocalStorage from "./hooks/useLocalStorage";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getUserApi, logoutUser } from "./actions/user";
 import ColabAPI from "./api/colabApi";
-import { useHistory } from "react-router";
+
 import LoadingSpinner from "./Components/auth/LoadingSpinner";
 
 function App() {
-  const history = useHistory();
   const dispatch = useDispatch();
-  const { projects } = useSelector(st => st.user.currentUser);
+
   const [token, setToken] = useLocalStorage("colab-token", null);
   const [infoLoaded, setInfoLoaded] = useState(false);
   useEffect(() => {

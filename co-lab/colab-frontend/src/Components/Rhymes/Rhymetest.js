@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+
 import RhymeForm from "./RhymeForm";
 import Modal from "react-bootstrap/Modal";
 import LoadingSpinner from "../auth/LoadingSpinner";
@@ -68,29 +68,3 @@ function Rhymetest(props) {
 }
 
 export default Rhymetest;
-// {
-
-// }
-{
-  /* <div>
-            <RhymeForm search={findRhymes} />
-            {loading && <LoadingSpinner />}
-            {word.length > 0 && !loading && (
-              <h3 style={{ color: "white" }} className="ml-3 mt-4">
-                Words that rhyme with '{word}':{" "}
-              </h3>
-            )}
-            <ol className="list-group ml-3 mr-3">
-              {rhymes.map((rhyme, idx) => (
-                <li
-                  key={idx}
-                  className="list-group-item list-group-item-success text-secondary d-flex justify-content-between align-items-center"
-                >
-                  {rhyme.word}
-
-                  <span class="badge badge-primary badge-pill">Score: {rhyme.score}</span>
-                </li>
-              ))}
-            </ol>
-          </div> */
-}

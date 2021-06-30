@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import "./ProjectCard.css";
 import ColabAPI from "../../api/colabApi";
 import moment from "moment";
@@ -16,7 +14,7 @@ function ProjectCard({ id, title, updatedAt, owner }) {
       }
     }
     getProject(id);
-  }, []);
+  }, [id]);
 
   return (
     <div className="ProjectCard">

@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { getUserApi } from "../../actions/user";
+
 import UserAvatar from "./UserAvatar";
 import "./UserDetailsCard.css";
 function UserDetailsCard(props) {

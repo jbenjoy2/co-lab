@@ -11,12 +11,14 @@ function Requests(props) {
     const getUserRequests = async user => {
       const res = await ColabAPI.getUserRequests(user);
       const requests = res.userRequests;
-      const toDo = requests.filter(req => req.accepted === null);
+      if (requests) {
+        const toDo = requests.filter(req => req.accepted === null);
 
-      setUserRequests(toDo);
+        setUserRequests(toDo);
+      }
     };
     getUserRequests(currentUser.username);
-  }, []);
+  }, [currentUser.username]);
 
   return (
     <div className="Request-wrapper">
