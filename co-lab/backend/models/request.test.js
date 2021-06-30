@@ -21,9 +21,11 @@ describe("getRequestsForUser", () => {
     const requests = await Request.getRequestsForUser("u2");
     expect(requests).toEqual([
       {
+        accepted: null,
+        projectId: expect.any(Number),
         requestID: reqIDs[0],
         sender: "u1",
-        sentAt: expect.any(String)
+        sentAt: expect.any(Date)
       }
     ]);
   });

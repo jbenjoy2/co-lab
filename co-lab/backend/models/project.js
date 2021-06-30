@@ -73,7 +73,6 @@ class Project {
     const result = await db.query(
       `SELECT     id,
                   title,
-                  notes,
                   owner, 
                   updated_at AS "updatedAt"
             FROM projects

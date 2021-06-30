@@ -144,15 +144,15 @@ describe("GET /users/:username", () => {
         imageURL: null,
         projects: [
           {
-            id: projIds[0],
-            updatedAt: expect.any(String),
-            title: "testproj1",
-            owner: true
-          },
-          {
             id: projIds[1],
             updatedAt: expect.any(String),
             title: "testproj2",
+            owner: true
+          },
+          {
+            id: projIds[0],
+            updatedAt: expect.any(String),
+            title: "testproj1",
             owner: true
           }
         ]

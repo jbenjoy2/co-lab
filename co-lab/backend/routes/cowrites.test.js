@@ -29,7 +29,10 @@ describe("DELETE /cowrites", () => {
 
     expect(response.statusCode).toEqual(200);
     expect(response.body).toEqual({
-      removed: "testuser1"
+      removed: {
+        projectId: projIds[0],
+        username: "testuser1"
+      }
     });
   });
   it("fails with unauth if not a project contributor", async () => {

@@ -245,7 +245,7 @@ describe("get", () => {
       projects: [
         {
           id: projIDs[0],
-          updatedAt: expect.any(String),
+          updatedAt: expect.any(Date),
           title: expect.any(String),
           owner: expect.any(Boolean)
         }

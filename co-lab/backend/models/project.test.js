@@ -55,7 +55,7 @@ describe("get", () => {
   it("should successfully return a project with its contributors listed as an array of usernames", async () => {
     const proj = await Project.get(projIDs[0]);
     expect(proj).toEqual({
-      updatedAt: expect.any(String),
+      updatedAt: expect.any(Date),
       title: "testproj",
       notes: null,
       owner: "u1",
@@ -80,7 +80,7 @@ describe("update", () => {
     const proj = await Project.update(projIDs[0], updateData);
     expect(proj).toEqual({
       id: projIDs[0],
-      updatedAt: expect.any(String),
+      updatedAt: expect.any(Date),
       notes: null,
       ...updateData
     });
@@ -92,7 +92,7 @@ describe("update", () => {
     const proj = await Project.update(projIDs[0], updateData);
     expect(proj).toEqual({
       id: projIDs[0],
-      updatedAt: expect.any(String),
+      updatedAt: expect.any(Date),
       title: "testproj",
       ...updateData
     });
@@ -102,7 +102,7 @@ describe("update", () => {
     const proj = await Project.update(projIDs[0], updateData);
     expect(proj).toEqual({
       id: projIDs[0],
-      updatedAt: expect.any(String),
+      updatedAt: expect.any(Date),
       title: "testproj",
       notes: null
     });

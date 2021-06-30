@@ -27,6 +27,8 @@ describe("GET /requests/:username", () => {
     expect(response.body).toEqual({
       userRequests: [
         {
+          accepted: null,
+          projectId: projIds[0],
           requestID: reqIds[0],
           sender: "testuser1",
           sentAt: expect.any(String)
