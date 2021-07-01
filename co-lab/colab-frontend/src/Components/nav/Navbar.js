@@ -55,7 +55,7 @@ function Navigation({ logout }) {
   function loggedOutNav() {
     return (
       <>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" className="mr-auto" />
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" className="ml-auto" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
             <Nav.Link eventKey="0">
@@ -93,7 +93,7 @@ function Navigation({ logout }) {
             className="d-inline-block align-top img"
             alt="React Bootstrap logo"
           />{" "}
-          Co-Lab
+          COLAB
         </Link>
       </Navbar.Brand>
 

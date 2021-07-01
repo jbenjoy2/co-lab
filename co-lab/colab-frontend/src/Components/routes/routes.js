@@ -13,6 +13,7 @@ import Protected from "./Protected";
 import Profile from "../Profile/Profile";
 import ProjectMain from "../Project/ProjectMain";
 import { useSelector } from "react-redux";
+import LandingPage from "../LandingPage";
 
 function Routes({ login, register }) {
   const { currentUser } = useSelector(st => st.user);
@@ -26,7 +27,7 @@ function Routes({ login, register }) {
       </Route>
 
       <Route exact path="/">
-        {currentUser.username ? <UserDashboard /> : <h1 className="text-light">Landing Page</h1>}
+        {currentUser.username ? <UserDashboard /> : <LandingPage />}
       </Route>
       <Route exact path="/register">
         <RegisterForm register={register} />
