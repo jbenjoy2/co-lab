@@ -22,9 +22,9 @@ function LandingPage() {
         />
         <div className="container mt-4 text-light" style={{ fontSize: "1.5rem" }}>
           <p>
-            Colab is a collaborate songwriting brainstorming suite! With everything you need to get
-            your ideas flowing, it's the perfect way to begin the process of writing and arranging
-            your next smash hit.
+            Colab is a collaborative songwriting brainstorming suite! With everything you need to
+            get your ideas flowing, it's the perfect way to begin the process of writing and
+            arranging your next smash hit.
           </p>
           <p className="text-center">
             <Link to="/login">Log in</Link> or <Link to="/register">sign up</Link> to get started!
@@ -55,8 +55,8 @@ function LandingPage() {
         <p>
           The main project page is a songwriting suite! It contains everything you may need to get
           the creative juices flowing, including a RhymeZone™-powered rhyme finder, an inspirational
-          quote generator, and a way to invite friends to collaborate with you on your artistic
-          genius
+          quote generator, and a way to invite fellow songwriters to collaborate with you on your
+          artistic genius
         </p>
       </section>
       <div className="pimg3">
@@ -84,7 +84,7 @@ function LandingPage() {
         <p>
           Use the Arrangement Lab to click and drag song sections into your preferred hypothetical
           arrangement. As the song develops and the arrangement changes, feel free to keep track of
-          those changes by adjusting the tiles as necessary!
+          those changes by reordering the tiles as necessary!
         </p>
       </section>
       <div className="pimg7">
