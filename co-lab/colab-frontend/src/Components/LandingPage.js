@@ -9,7 +9,7 @@ import collaborate from "./LandingPagePhotos/collaborate.png";
 import { Link } from "react-router-dom";
 function LandingPage() {
   return (
-    <div className="container-fluid " style={{ overflowY: "scroll", height: "95vh" }}>
+    <div style={{ overflowY: "scroll", height: "95vh" }}>
       <div className="text-center mt-5" style={{ overflowY: "scroll", height: "100%" }}>
         <h1 className="text-light" style={{ letterSpacing: "1rem" }}>
           WELCOME TO
