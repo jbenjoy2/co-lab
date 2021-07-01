@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory, Redirect } from "react-router-dom";
+import { useHistory, Redirect, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 function LoginForm({ login }) {
   const currentUser = useSelector(st => st.user.currentUser);
@@ -70,10 +70,13 @@ function LoginForm({ login }) {
                 />
               </div>
 
-              <button className="btn btn-warning btn-block text-light" onSubmit={handleSubmit}>
+              <button className="btn btn-cancel btn-block text-light" onSubmit={handleSubmit}>
                 Login
               </button>
             </form>
+            <p className="mt-2">
+              Don't have an account? <Link to="/register">Click here to sign up!</Link>
+            </p>
           </div>
         </div>
       </div>

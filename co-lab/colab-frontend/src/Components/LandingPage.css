@@ -1,0 +1,120 @@
+.main-divider {
+  background-color: #3c98b1;
+}
+
+.pimg1,
+.pimg2,
+.pimg3,
+.pimg4,
+.pimg5,
+.pimg6 {
+  position: relative;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.5;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.pimg7 {
+  position: relative;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.8;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.pimg1 {
+  background-image: url("./LandingPagePhotos/UserDashboard.png");
+  min-height: 100%;
+}
+.pimg2 {
+  background-image: url("./LandingPagePhotos/ProjectMain.png");
+  min-height: 100%;
+}
+.pimg3 {
+  background-image: url("./LandingPagePhotos/rhymes.png");
+  min-height: 100%;
+}
+.pimg4 {
+  background-image: url("./LandingPagePhotos/quote.png");
+  min-height: 100%;
+}
+.pimg5 {
+  background-image: url("./LandingPagePhotos/collaborate.png");
+  min-height: 100%;
+}
+.pimg6 {
+  background-image: url("./LandingPagePhotos/Arrangement.png");
+  min-height: 100%;
+}
+.pimg7 {
+  background-image: url("./ColabLogo.png");
+  min-height: 100%;
+}
+
+.LandingPage-projectMain {
+  text-align: center !important;
+}
+
+.section {
+  text-align: center;
+  padding: 50px 80px;
+  background-color: #282e34;
+  color: #ddd;
+}
+
+.section-light {
+  background-color: #a5a2a2;
+  color: rgb(41, 40, 40);
+}
+
+.ptext {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  color: #000;
+  font-size: 27px;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+}
+
+.ptext-border {
+  background-color: #111;
+  color: #f47b33;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.ptext-border.bottom-span {
+  background-color: transparent;
+  color: #3c98b1;
+}
+
+.ptext.last {
+  top: 80%;
+}
+
+@media (max-width: 568px) {
+  .pimg1,
+  .pimg2,
+  .pimg3,
+  .pimg4,
+  .pimg5,
+  .pimg6,
+  .pimg7 {
+    background-attachment: scroll;
+  }
+  .ptext {
+    font-size: 12px;
+  }
+  .ptext-border {
+    padding: 5px;
+  }
+  .pimg4,
+  .pimg5,
+  .pimg6 {
+    min-height: 60%;
+  }
+}

@@ -10,7 +10,6 @@ function RhymeForm({ search }) {
   const handleSubmit = e => {
     e.preventDefault();
     search(term);
-    setTerm("");
   };
 
   return (

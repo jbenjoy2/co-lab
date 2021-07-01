@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 /** Signup form.
  *
@@ -107,8 +107,14 @@ function RegisterForm({ register }) {
                   onChange={handleChange}
                 />
               </div>
-
-              <button type="submit" className="btn btn-primary float-right" onSubmit={handleSubmit}>
+              <span>
+                Already have an account? <Link to="/login">Log In</Link>
+              </span>
+              <button
+                type="submit"
+                className="btn btn-accept float-right mt-2"
+                onSubmit={handleSubmit}
+              >
                 Submit
               </button>
             </form>

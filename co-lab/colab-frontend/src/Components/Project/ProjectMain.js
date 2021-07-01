@@ -1,5 +1,5 @@
 import { Alert, OverlayTrigger, Tooltip } from "react-bootstrap";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import ColabAPI from "../../api/colabApi";
 import LoadingSpinner from "../auth/LoadingSpinner";
@@ -48,6 +48,11 @@ function ProjectMain() {
     e.preventDefault();
     setEditing(false);
   };
+
+  const inputEl = useRef(null);
+  function handleFocus() {
+    inputEl.current.select();
+  }
 
   const saveProject = async (projectId, notes) => {
     setProject(project => ({ ...project, notes: notes }));
@@ -104,6 +109,8 @@ function ProjectMain() {
               onChange={handleChange}
               className="form-control"
               maxLength="25"
+              autoFocus
+              onFocus={e => e.currentTarget.select()}
             />
             <button className="btn btn-primary mt-2">Save</button>
           </form>
@@ -124,7 +131,9 @@ function ProjectMain() {
               overlay={<Tooltip id={`tooltip-edit`}>Click To Edit Project Title</Tooltip>}
             >
               <h1
-                onClick={() => setEditing(true)}
+                onClick={() => {
+                  setEditing(true);
+                }}
                 style={{ textDecoration: "underline", textDecorationColor: "#F47B33" }}
                 className="text-light mb-1 ProjectMain-title"
               >
