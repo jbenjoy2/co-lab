@@ -10,7 +10,7 @@ import ProjectNotesForm from "./ProjectNotesForm";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserProjectApi, deleteUserProjectApi, leaveProjectApi } from "../../actions/user";
 import UserSearch from "./UserSearch";
-
+import { Helmet } from "react-helmet";
 function ProjectMain() {
   const dispatch = useDispatch();
   const { projectId } = useParams();
@@ -98,6 +98,11 @@ function ProjectMain() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Colab - "{title}" by {currentUser.username}
+        </title>
+      </Helmet>
       <div className="text-center">
         {editing ? (
           <form onSubmit={handleSubmit} className="container w-50 mt-5">
@@ -109,6 +114,7 @@ function ProjectMain() {
               onChange={handleChange}
               className="form-control"
               maxLength="25"
+              minLength={2}
               autoFocus
               onFocus={e => e.currentTarget.select()}
             />

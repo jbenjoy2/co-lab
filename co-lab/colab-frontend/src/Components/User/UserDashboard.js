@@ -6,7 +6,7 @@ import "./UserDashboard.css";
 
 import UserDetailsCard from "./UserDetailsCard";
 import Notification from "./Notification";
-
+import { Helmet } from "react-helmet";
 import { useHistory } from "react-router-dom";
 import { addUserProjectApi } from "../../actions/user";
 function UserDashboard() {
@@ -22,6 +22,9 @@ function UserDashboard() {
 
   return (
     <div className="UserDashboard">
+      <Helmet>
+        <title>Colab - {currentUser.username}'s Dashboard</title>
+      </Helmet>
       <div className="justify-content-center">
         <div className="container w-50">
           <button

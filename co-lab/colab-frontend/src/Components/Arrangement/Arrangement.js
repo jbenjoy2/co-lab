@@ -4,7 +4,7 @@ import SectionsSource from "./SectionsSource";
 import SectionsDest from "./SectionsDest";
 import { v4 as uuid } from "uuid";
 import styled from "styled-components";
-
+import { Helmet } from "react-helmet";
 import up from "./audio/buttonUp.mp3";
 import down from "./audio/buttonDown.mp3";
 import whoosh from "./audio/whoosh.mp3";
@@ -138,6 +138,9 @@ function Arrangement() {
   };
   return (
     <div>
+      <Helmet>
+        <title>Colab - Arrangement Lab</title>
+      </Helmet>
       <DragDropContext onDragStart={playDown} onDragEnd={handleDragEnd}>
         <Container>
           <SectionsSource sections={sectionsAPI} />

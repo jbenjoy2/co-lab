@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Link, useHistory } from "react-router-dom";
-
+import { Helmet } from "react-helmet";
 /** Signup form.
  *
  * Shows form and manages update to state on changes.
@@ -54,6 +54,13 @@ function RegisterForm({ register }) {
         height: "78vh"
       }}
     >
+      <Helmet>
+        <title>Colab - Sign Up</title>
+        <meta
+          name="descrition"
+          content="Welcome to Colab, a brainstorming suite for songwriters and creatives! Sign up to join!"
+        />
+      </Helmet>
       <div className="container col-md-6 offset-md-3 col-lg-4 offset-lg-4">
         <h2 className="mb-3 text-light">Sign Up</h2>
         <div className="card">

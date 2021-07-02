@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory, Redirect, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 function LoginForm({ login }) {
   const currentUser = useSelector(st => st.user.currentUser);
 
@@ -40,6 +41,13 @@ function LoginForm({ login }) {
         height: "95vh"
       }}
     >
+      <Helmet>
+        <title>Colab - Log In</title>
+        <meta
+          name="descrition"
+          content="Welcome to Colab, a brainstorming suite for songwriters and creatives! Please log in"
+        />
+      </Helmet>
       <div className="container col-md-6 offset-md-3 col-lg-4 offset-lg-4">
         <h3 className="mb-3 text-light">Log In</h3>
 

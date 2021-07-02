@@ -7,9 +7,17 @@ import rhyme from "./LandingPagePhotos/rhymes.png";
 import quote from "./LandingPagePhotos/quote.png";
 import collaborate from "./LandingPagePhotos/collaborate.png";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 function LandingPage() {
   return (
     <div style={{ overflowY: "scroll", height: "95vh" }}>
+      <Helmet>
+        <title>Colab - Home</title>
+        <meta
+          name="descrition"
+          content="Welcome to Colab, a brainstorming suite for songwriters and creatives!"
+        />
+      </Helmet>
       <div className="text-center mt-5" style={{ overflowY: "scroll", height: "100%" }}>
         <h1 className="text-light" style={{ letterSpacing: "1rem" }}>
           WELCOME TO
