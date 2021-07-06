@@ -10,7 +10,7 @@ import down from "./audio/buttonDown.mp3";
 import whoosh from "./audio/whoosh.mp3";
 import useSound from "use-sound";
 import ToolBar from "./Buttons";
-import { useParams } from "react-router-dom";
+import { useParams, Redirect } from "react-router-dom";
 import ColabAPI from "../../api/colabApi";
 import Alert from "react-bootstrap/Alert";
 
@@ -31,6 +31,27 @@ function Arrangement() {
   const [arrangements, setArrangements] = useState([]);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  useEffect(() => {
+    async function getProjectArrangement() {
+      try {
+        const arrangement = await ColabAPI.getArrangement(projectId);
+        const usableArrangements = arrangement.filter(arr => arr.sectionId !== null);
+        setArrangements(
+          usableArrangements.map(arr => ({
+            ...arr,
+            dragId: uuid()
+          }))
+        );
+      } catch (error) {
+        if (error.status) {
+          setIsRedirecting(true);
+        }
+      }
+    }
+    getProjectArrangement();
+  }, [projectId]);
 
   useEffect(() => {
     async function getSections() {
@@ -47,20 +68,6 @@ function Arrangement() {
     }
     getSections();
   }, []);
-
-  useEffect(() => {
-    async function getProjectArrangement() {
-      const arrangement = await ColabAPI.getArrangement(projectId);
-      const usableArrangements = arrangement.filter(arr => arr.sectionId !== null);
-      setArrangements(
-        usableArrangements.map(arr => ({
-          ...arr,
-          dragId: uuid()
-        }))
-      );
-    }
-    getProjectArrangement();
-  }, [projectId]);
 
   const adjustOrder = (arr, startIdx, endIdx) => {
     const arrCopy = [...arr];
@@ -136,6 +143,9 @@ function Arrangement() {
       setErrors(errors => [...errors, error]);
     }
   };
+  if (isRedirecting) {
+    return <Redirect to="/" />;
+  }
   return (
     <div>
       <Helmet>

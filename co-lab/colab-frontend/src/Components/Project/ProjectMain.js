@@ -31,8 +31,7 @@ function ProjectMain() {
         setTitle(proj.title);
         setCowriters(new Set(proj.contributors));
       } catch (error) {
-        console.log("error", error);
-        if (error.status === 401) {
+        if (error.status) {
           setIsReidrecting(true);
         }
       }
