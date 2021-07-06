@@ -8,7 +8,7 @@ function CardList({ projects }) {
     <div className="wrapper">
       <div className="CardList scrollable">
         {projects.map(m => (
-          <Link key={m.id} to={`/${m.id}`} className="card-link">
+          <Link key={m.id} to={`/projects/${m.id}`} className="card-link">
             <ProjectCard
               key={m.id}
               id={m.id}

@@ -33,10 +33,10 @@ function Routes({ login, register }) {
       <Protected exact path="/profile">
         <Profile />
       </Protected>
-      <Protected exact path="/:projectId">
+      <Protected exact path="/projects/:projectId">
         <ProjectMain />
       </Protected>
-      <Protected exact path="/:projectId/arrangement-lab">
+      <Protected exact path="/projects/:projectId/arrangement-lab">
         <Arrangement />
       </Protected>
       <Redirect to="/" />

@@ -50,7 +50,7 @@ function ToolBar({ submit, projectId }) {
                 Cancel
               </Button>
               <Button
-                onClick={() => history.push(`/${projectId}`)}
+                onClick={() => history.push(`/projects/${projectId}`)}
                 variant="outline-primary"
                 className="ml-3"
               >

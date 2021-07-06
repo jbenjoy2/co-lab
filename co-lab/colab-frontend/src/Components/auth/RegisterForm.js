@@ -31,10 +31,11 @@ function RegisterForm({ register }) {
   async function handleSubmit(evt) {
     evt.preventDefault();
     const result = await register(formData);
+    console.log(result);
     if (result.success) {
       history.push("/dashboard");
     } else {
-      setFormErrors(result.errors);
+      setFormErrors([result.errors.data.error.message]);
     }
   }
 

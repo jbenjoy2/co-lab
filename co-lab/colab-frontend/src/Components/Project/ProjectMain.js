@@ -1,6 +1,6 @@
 import { Alert, OverlayTrigger, Tooltip } from "react-bootstrap";
 import React, { useEffect, useState, useRef } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Redirect } from "react-router-dom";
 import ColabAPI from "../../api/colabApi";
 import LoadingSpinner from "../auth/LoadingSpinner";
 import Quotetest from "../Quote/QuoteTest";
@@ -22,15 +22,19 @@ function ProjectMain() {
   const [title, setTitle] = useState(project.title);
   const [errors, setErrors] = useState([]);
   const { currentUser } = useSelector(st => st.user);
+  const [isRedirecting, setIsReidrecting] = useState(false);
   useEffect(() => {
     const getProject = async id => {
       try {
         const proj = await ColabAPI.getProject(id);
         setProject(proj);
         setTitle(proj.title);
-        setCowriters(proj.contributors.filter(c => c !== proj.owner));
+        setCowriters(new Set(proj.contributors));
       } catch (error) {
-        console.log(error);
+        console.log("error", error);
+        if (error.status === 401) {
+          setIsReidrecting(true);
+        }
       }
       setLoading(false);
     };
@@ -38,7 +42,9 @@ function ProjectMain() {
     getProject(projectId);
   }, [projectId]);
 
-  const cowriterString = cowriters.join(", ");
+  const cowriterString = Array.from(cowriters)
+    .filter(c => c !== project.owner)
+    .join(", ");
 
   const handleChange = e => {
     setTitle(e.target.value);
@@ -93,9 +99,10 @@ function ProjectMain() {
       console.log(error);
     }
   };
-
+  if (isRedirecting) return <Redirect to="/" />;
   if (loading) return <LoadingSpinner />;
 
+  // console.log(cowriters.has(currentUser.username));
   return (
     <>
       <Helmet>
@@ -158,7 +165,7 @@ function ProjectMain() {
         <Rhymetest />
         <Quotetest />
         <UserSearch projectId={projectId} owner={project.owner} />
-        <Link className="btn btn-primary" to={`/${projectId}/arrangement-lab`}>
+        <Link className="btn btn-primary" to={`/projects/${projectId}/arrangement-lab`}>
           Arrangement Lab
         </Link>
       </div>
