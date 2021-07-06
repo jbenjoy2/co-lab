@@ -117,6 +117,15 @@ function RegisterForm({ register }) {
               <span>
                 Already have an account? <Link to="/login">Log In</Link>
               </span>
+              {formErrors.length ? (
+                <div className="alert alert-danger" role="alert">
+                  {formErrors.map(error => (
+                    <p className="mb-0 small" key={error}>
+                      {error}
+                    </p>
+                  ))}
+                </div>
+              ) : null}
               <button
                 type="submit"
                 className="btn btn-accept float-right mt-2"
