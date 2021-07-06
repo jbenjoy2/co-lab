@@ -66,7 +66,7 @@ function NewRequest({ request }) {
       {accepted && (
         <div className="float-left">
           <p>
-            Cowrite accepted! <Link to={`/${request.projectId}`}>Go to project</Link>
+            Cowrite accepted! <Link to={`/projects/${request.projectId}`}>Go to project</Link>
           </p>
         </div>
       )}
