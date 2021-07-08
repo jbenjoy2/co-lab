@@ -59,7 +59,7 @@ class Request {
       `
         SELECT id, accepted 
         FROM requests 
-        WHERE project_id=$1 AND sender=$2 AND recipient=$3 AND (accepted IS null OR accepted IS true)`,
+        WHERE project_id=$1 AND sender=$2 AND recipient=$3 AND (accepted IS null)`,
       [project_id, sender, recipient]
     );
 

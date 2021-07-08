@@ -39,7 +39,6 @@ app.get("/quote", async (req, res, next) => {
   try {
     const results = await axios.get(`https://zenquotes.io/api/random/${QUOTE_KEY}`);
     const foundQuote = results.data[0];
-    console.log(foundQuote);
     return res.json({ foundQuote });
   } catch (error) {
     return next(error);

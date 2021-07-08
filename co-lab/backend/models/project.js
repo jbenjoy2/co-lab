@@ -125,7 +125,7 @@ class Project {
         [id, username]
       );
       const deleted = qry.rows[0];
-      console.log(deleted);
+     
       if (!deleted)
         throw new BadRequestError(
           `User with username ${username} not a cowriter on projectd with id ${id}`
