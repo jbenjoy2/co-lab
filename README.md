@@ -7,8 +7,9 @@
 ---
 
 <p align="center">
-<img src="static/logo.png" />
+![logo](static/Logo.png)  
 </p>
+
 ### PROJECT GOALS
   Colab is a full-stack web app that marks my second capstone project for the Springboard Software Engineering Career Track Bootcamp, utilitizing an ExpressJS backend with a ReactJS frontend. It includes the following technologies:
 
