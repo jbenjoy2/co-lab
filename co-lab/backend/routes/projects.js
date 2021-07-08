@@ -9,6 +9,10 @@ const router = new express.Router();
 
 const { checkProjectOwner, checkProjectContributor } = require("../Middleware/project");
 
+/** POST /new {title, owner} => {newProject: {id, title, owner, createdAt}}
+ *
+ * Authorization required: none
+ **/
 router.post("/new", async (req, res, next) => {
   try {
     const validator = jsonschema.validate(req.body, projectNewSchema);
@@ -26,6 +30,12 @@ router.post("/new", async (req, res, next) => {
   }
 });
 
+/** get /[projectId]  => {project: {updatedAt, title, notes, owner, contributors}}
+ * where contributors = [username1, username2, ...]
+ *
+ * Authorization required: project contributor
+ **/
+
 router.get("/:projectId", checkProjectContributor, async (req, res, next) => {
   const { projectId } = req.params;
 
@@ -36,7 +46,11 @@ router.get("/:projectId", checkProjectContributor, async (req, res, next) => {
     return next(error);
   }
 });
-
+/** get /[projectId]/basic  => {project: {id, title, owner, updatedAt}}
+ *
+ *
+ * Authorization required: none
+ **/
 router.get("/:projectId/basic", async (req, res, next) => {
   const { projectId } = req.params;
   try {
@@ -46,6 +60,16 @@ router.get("/:projectId/basic", async (req, res, next) => {
     return next(error);
   }
 });
+
+/**  PATCH /[projectId] { data } => { project }
+ *
+ * Data can include:
+ *   { title, notes }
+ *
+ * Returns { updated: {id, updatedAt, title, notes} }
+ *
+ * Authorization required: project contributor
+ **/
 
 router.patch("/:projectId", checkProjectContributor, async (req, res, next) => {
   try {
@@ -61,6 +85,12 @@ router.patch("/:projectId", checkProjectContributor, async (req, res, next) => {
     return next(error);
   }
 });
+
+/**
+ * DELETE /[projectId] => {deleted: projectId}
+ *
+ * Authorization required: project owner
+ */
 
 router.delete("/:projectId", checkProjectOwner, async (req, res, next) => {
   try {

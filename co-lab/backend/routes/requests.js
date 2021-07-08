@@ -8,6 +8,10 @@ const { checkCorrectUser } = require("../Middleware/auth");
 const { checkRequestRecipient } = require("../Middleware/request");
 
 const router = new express.Router();
+/** GET /[username]  =>  { userRequests }
+ *
+ * Authorization required: correct user
+ **/
 
 router.get("/:username", checkCorrectUser, async (req, res, next) => {
   const recipient = req.params.username;
@@ -24,6 +28,10 @@ router.get("/:username", checkCorrectUser, async (req, res, next) => {
   }
 });
 
+/** GET /projects/[projectId]  =>  {projRequests}
+ *
+ * Authorization required: none
+ **/
 router.get("/projects/:projectId", async (req, res, next) => {
   const { projectId } = req.params;
   try {
@@ -36,6 +44,11 @@ router.get("/projects/:projectId", async (req, res, next) => {
     return next(error);
   }
 });
+
+/** POST /[username]/new {project_id, recipient}  =>  { newRequest: {id, sender, recipient, accepted, sentAt} }
+ *
+ * Authorization required: correctuser
+ **/
 router.post("/:username/new", checkCorrectUser, async (req, res, next) => {
   try {
     const validator = jsonschema.validate(req.body, requestNewSchema);
@@ -61,7 +74,10 @@ router.post("/:username/new", checkCorrectUser, async (req, res, next) => {
     return next(error);
   }
 });
-// respond to request
+/** PUT /[id] {response} => undefined
+ *
+ * Authorization required: request recipient
+ **/
 router.put("/:id", checkRequestRecipient, async (req, res, next) => {
   const { id } = req.params;
 

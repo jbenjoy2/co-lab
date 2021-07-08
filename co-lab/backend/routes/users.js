@@ -12,6 +12,17 @@ const Request = require("../models/request");
 
 const router = new express.Router();
 
+/** GET /  =>
+ *   { users: [ { username, firstName, lastName,  email, projects:[...]}, ...] }
+ *
+ * Can filter on provided search filters:
+ * - username
+ * - firstName
+ * - lastName
+ *
+ * Authorization required: logged in
+ */
+
 router.get("/", checkLoggedIn, async (req, res, next) => {
   const q = req.query;
   try {
@@ -32,6 +43,13 @@ router.get("/", checkLoggedIn, async (req, res, next) => {
   }
 });
 
+/** GET /[username] => { user }
+ *
+ * Returns { username, firstName, lastName, email, projects }
+ * 	where projects is [{id, updatedAt, title, owner}, ...]
+ *
+ * Authorization required: logged in
+ **/
 router.get("/:username", checkLoggedIn, async (req, res, next) => {
   try {
     const user = await User.getUser(req.params.username);
@@ -40,6 +58,15 @@ router.get("/:username", checkLoggedIn, async (req, res, next) => {
     return next(error);
   }
 });
+
+/** POST /register:   { user } => { token }
+ *
+ * user must include { username, password, firstName, lastName, email }
+ *
+ * Returns JWT token which can be used to authenticate further requests.
+ *
+ * Authorization required: none
+ */
 
 router.post("/register", async (req, res, next) => {
   try {
@@ -57,6 +84,14 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
+/** POST /login:   { user } => { token }
+ *
+ * user must include { username, password}
+ *
+ * Returns JWT token which can be used to authenticate further requests.
+ *
+ * Authorization required: none
+ */
 router.post("/login", async (req, res, next) => {
   try {
     const validator = jsonschema.validate(req.body, userAuthSchema);
@@ -75,6 +110,15 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
+/** PATCH /[username] { user } => { user }
+ *
+ * Data can include:
+ *   { firstName, lastName, email }
+ *
+ * Returns { username, firstName, lastName, email }
+ *
+ * Authorization required: correct user
+ **/
 router.patch("/:username", checkCorrectUser, async (req, res, next) => {
   try {
     const user = await User.update(req.params.username, req.body);
@@ -83,6 +127,11 @@ router.patch("/:username", checkCorrectUser, async (req, res, next) => {
     return next(error);
   }
 });
+
+/** DELETE /[username]  =>  { deleted: username }
+ *
+ * Authorization required: correct user
+ **/
 
 router.delete("/:username", checkCorrectUser, async (req, res, next) => {
   try {

@@ -7,7 +7,11 @@ const cowriteLeaveSchema = require("../schemas/cowriteLeaveSchema.json");
 const { checkProjectContributor } = require("../Middleware/project");
 const router = new express.Router();
 
-// use this to leave from a cowrite
+/**
+ * DELETE / {projectId, username} => {removed: {username, projectId}}
+ *
+ * Authorization required: project contributor
+ */
 router.delete("/", checkProjectContributor, async (req, res, next) => {
   try {
     const validator = jsonschema.validate(req.body, cowriteLeaveSchema);

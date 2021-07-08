@@ -7,6 +7,12 @@ const arrangementUpdateSchema = require("../schemas/arrangementUpdateSchema.json
 const { checkProjectContributor, checkProjectOwner } = require("../Middleware/project");
 const router = new express.Router();
 
+/**
+ * GET /[projectId] => {arrangement: [{id, sectionId, sectionName, index}, ...]}
+ *
+ * Authorization required: project contributor
+ */
+
 router.get("/:projectId", checkProjectContributor, async (req, res, next) => {
   try {
     const arrangement = await Arrangement.getAllForProject(req.params.projectId);
@@ -16,6 +22,12 @@ router.get("/:projectId", checkProjectContributor, async (req, res, next) => {
     return next(error);
   }
 });
+
+/**
+ * POST  /[projectId] => {created: projectId}
+ *
+ * Authorization required: project owner
+ */
 router.post("/:projectId", checkProjectOwner, async (req, res, next) => {
   // create new one manually if front end is being weird;
   try {
@@ -27,8 +39,13 @@ router.post("/:projectId", checkProjectOwner, async (req, res, next) => {
   }
 });
 
-router.put("/:projectId", checkProjectContributor, async (req, res, next) => {
+/**
+ * PUT /[projectId] {data}=> {updated: 'project[projectId] arrangement'}
+ *
+ * Authorization required: project contributor
+ */
 
+router.put("/:projectId", checkProjectContributor, async (req, res, next) => {
   try {
     const validator = jsonschema.validate(req.body, arrangementUpdateSchema);
     if (!validator.valid) {
@@ -69,7 +86,14 @@ router.put("/:projectId", checkProjectContributor, async (req, res, next) => {
     return next(error);
   }
 });
-// this route does NOT delete entirely from the table, but instead triggers the "clear" method on the arrangement model to restart from scratch (fast way to clear out instead of moving everything one by one)
+
+/**
+ * DELETE /[projectId]/clear => {arrangement reset: projectId}
+ *
+ * Authorization required: project contributor
+ * this route does NOT delete entirely from the table, but instead triggers the "clear" method on the arrangement model to restart from scratch (fast way to clear out instead of moving everything one by one)
+ */
+
 router.delete("/:projectId/clear", checkProjectContributor, async (req, res, next) => {
   try {
     await Arrangement.clear(req.params.projectId);
