@@ -7,7 +7,9 @@
 ---
 
 
-![logo](static/Logo.png)  
+<p align="center">
+<img src="static/Logo.png" />
+</p>
 
 
 ### PROJECT GOALS
