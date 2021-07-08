@@ -5,6 +5,14 @@ const { updateQuery } = require("../helperFuncs/sql");
 const Arrangement = require("./arrangement");
 
 class Project {
+  /**
+   * Creates new project with given data
+   *
+   * input: Data (should include title and owner)
+   * returns: id, title, owner, createdAt
+   *
+   * DISCLAIMER: this also creates a new entry in the Arrangements table corresponding to the new project, and an entry into the cowrites table corresponding to the new project with the provided owner
+   */
   static async create({ title, owner }) {
     const qry = await db.query(
       `
@@ -32,6 +40,15 @@ class Project {
     return project;
   }
 
+  /**
+   * Removes project from database
+   *
+   * input: project id
+   * returns: projectId
+   *
+   *
+   */
+
   static async remove(id) {
     const result = await db.query(
       `DELETE FROM projects
@@ -44,6 +61,15 @@ class Project {
 
     if (!deletedProj) throw new NotFoundError(`Project with id ${id} not found. Could not delete`);
   }
+
+  /**
+   * Fetches single project from database
+   *
+   * input: project id
+   * returns: updatedAt, title, notes, owner, project Contributors
+   *
+   *
+   */
 
   static async get(id) {
     const result = await db.query(
@@ -69,6 +95,13 @@ class Project {
 
     return foundProject;
   }
+
+  /**
+   * Returns basic details for single project- this method is utilized for the request module on the front end
+   *
+   * input: id
+   * returns: id, title, owner, updatedAt
+   */
   static async getBasicDetails(id) {
     const result = await db.query(
       `SELECT     id,
@@ -86,7 +119,18 @@ class Project {
     return foundProject;
   }
 
-  //   needs to update updatedAt each time, and can optionally update project title, notes
+  //
+
+  /**
+   * Updates project with given data
+   * Data can include title and notes
+   *
+   * needs to update updatedAt each time, and can optionally update project title, notes
+   * input: projectId, Data (can include title and/or owner)
+   * returns: id, title, notes , updatedat
+   *
+   *
+   */
   static async update(projectId, data) {
     const javascript = {
       updatedAt: "updated_at"
@@ -116,6 +160,18 @@ class Project {
     return project;
   }
 
+  /**
+   * Method to allow user to leave from a project
+   *
+   * input: id, username
+   * returns: isOwner
+   *
+   * THIS METHOD DELETES THE PASSED USER FROM THE COWRITES TABLE FOR THE CORRESPONDING PROJECT ID. IF USER IS PROJECT OWNER, PROJECT GETS DELETED, OTHERWISE REQUEST IS DELETED
+   *
+   *
+   *
+   */
+
   static async leave(id, username) {
     try {
       const qry = await db.query(
@@ -125,7 +181,7 @@ class Project {
         [id, username]
       );
       const deleted = qry.rows[0];
-     
+
       if (!deleted)
         throw new BadRequestError(
           `User with username ${username} not a cowriter on projectd with id ${id}`

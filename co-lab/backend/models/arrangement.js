@@ -4,6 +4,10 @@ const moment = require("moment");
 const { arrangementProjectUpdate } = require("../helperFuncs/sql");
 
 class Arrangement {
+  /**
+   * Create new arrangement for a new project. Takes in projectId and returns that projectId as well
+   *
+   */
   static async create(projectId) {
     const query = await db.query(
       `INSERT INTO arrangements(project_id) VALUES($1) RETURNING project_id`,
@@ -13,6 +17,13 @@ class Arrangement {
     await arrangementProjectUpdate(projectId);
     return inserted;
   }
+
+  /**
+   * Add new section row to arrangement table for given project.
+   * Input: projectId, sectionId, and position in array
+   * Returns: Arrangement Id, projectId, sectionId, index, and updatedAt
+   *
+   */
   static async add(projectId, sectionId, position) {
     try {
       const query = await db.query(
@@ -33,6 +44,14 @@ class Arrangement {
     }
   }
 
+  /**
+   * Update single section row in arrangement table for given projectId.
+   * Inputs: arrangement id, new position in array
+   * Returns: arrangement id, projectId, sectionId, index, updatedAt.
+   *
+   * Disclaimer: this also updates the uupdatedAt column for the returned projectId
+   *
+   */
   static async update(id, newPosition) {
     const query = await db.query(
       `UPDATE arrangements SET position=$1, updated_at=CURRENT_TIMESTAMP WHERE id=$2 RETURNING id, project_id AS "projectId", section_id AS "sectionId", position AS "index",updated_at AS "updatedAt"`,
@@ -50,6 +69,13 @@ class Arrangement {
     await arrangementProjectUpdate(projectId);
     return updated;
   }
+
+  /**
+   * Fetches all arrangement rows for given projectId from database
+   * Input: projectId
+   * Returns: arrangement Id, sectionId, sectionName, index (ordered by index)
+   *
+   */
   static async getAllForProject(projectId) {
     const query = await db.query(
       `SELECT a.id, s.id as "sectionId", s.name as "sectionName", a.position AS "index" FROM arrangements a LEFT JOIN sections s ON a.section_id=s.id WHERE a.project_id=$1 ORDER BY a.position`,
@@ -62,6 +88,15 @@ class Arrangement {
     }
     return projectArrangement;
   }
+
+  /**
+   * Deletes a given arrangement row from the table
+   * input: arrangement id
+   * Returns: arrangement Id, project_id
+   *
+   * DISCLAIMER: this will also update the "updatedAt" column on the projects table
+   *
+   */
   static async remove(id) {
     const res = await db.query(`DELETE FROM arrangements WHERE id=$1 RETURNING id, project_id`, [
       id
@@ -74,7 +109,13 @@ class Arrangement {
 
     await arrangementProjectUpdate(deletedArrangement.project_id);
   }
-  //   reset status of arrangement for a project to starting point
+  /**
+   * reset status of arrangement for a project to starting point
+   *
+   * input: projectId;
+   * returns: undefined
+   */
+
   static async clear(projectId) {
     const query = await db.query(
       `DELETE FROM arrangements WHERE project_id=$1 returning project_id`,
