@@ -150,6 +150,11 @@ class User {
     return foundUser;
   }
 
+  /**
+   * update user data in database
+   * input: username, data (can include firstName, lastName, and/or email)
+   * returns: username, firstName, lastName, email
+   */
   static async update(username, data) {
     const javascript = {
       firstName: "first_name",
@@ -171,6 +176,12 @@ class User {
     if (!user) throw new NotFoundError(`No user: ${username}`);
     return user;
   }
+
+  /**
+   * removes user from database
+   * input: username
+   * returns: username
+   */
 
   static async remove(username) {
     const qry = await db.query(
