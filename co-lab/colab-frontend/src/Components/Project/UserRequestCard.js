@@ -40,17 +40,17 @@ function UserRequestCard({ user, projectId, owner }) {
               Project Owner
             </button>
           )}
-          {!isOwner && (requests.length === 0 || requests[0].accepted === false) && (
+          {!isOwner && (requests.length === 0 || requests[requests.length - 1].accepted === false) && (
             <button onClick={handleClick} className="btn btn-primary text-uppercase float-right">
               Request
             </button>
           )}
-          {requests[0] && requests[0].accepted === null && (
+          {requests[requests.length - 1] && requests[requests.length - 1].accepted === null && (
             <button className="btn btn-warning text-uppercase float-right" disabled>
               Request Pending
             </button>
           )}
-          {requests[0] && requests[0].accepted === true && (
+          {requests[requests.length - 1] && requests[requests.length - 1].accepted === true && (
             <button className="btn btn-outline-secondary text-uppercase float-right" disabled>
               Already a collaborator
             </button>

@@ -17,7 +17,7 @@ function UserDashboard() {
   const createProject = async (title, owner) => {
     const createUserProject = addUserProjectApi(title, owner);
     const res = await createUserProject(dispatch);
-    history.push(`/${res.project.id}`);
+    history.push(`/projects/${res.project.id}`);
   };
 
   return (

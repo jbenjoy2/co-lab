@@ -45,7 +45,7 @@ function Arrangement() {
           }))
         );
       } catch (error) {
-        if (error.status) {
+        if (error.status && error.status !== 404) {
           setIsRedirecting(true);
         }
       }
@@ -139,7 +139,6 @@ function Arrangement() {
       await ColabAPI.updatedProjectArrangement(projectId, { data: withPosition });
       setSuccess(true);
     } catch (error) {
-      console.error(error);
       setErrors(errors => [...errors, error]);
     }
   };
@@ -157,7 +156,7 @@ function Arrangement() {
           <SectionsDest sections={arrangements} remove={removeItem} />
         </Container>
       </DragDropContext>
-      <ToolBar submit={handleSubmit} projectId={projectId} />
+      <ToolBar submit={handleSubmit} projectId={projectId} length={arrangements.length} />
       {success && (
         <div className="container text-center mt-4">
           <Alert
