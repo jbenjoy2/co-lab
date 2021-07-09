@@ -2,18 +2,18 @@ import React, { useState } from "react";
 
 import { Link, useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
-/** Signup form.
- *
- * Shows form and manages update to state on changes.
- * On submission:
- * - calls signup function prop
- * - redirects to /companies route
- *
- * Routes -> SignupForm -> Alert
- * Routed as /signup
- */
 
 function RegisterForm({ register }) {
+  /** Signup form.
+   *
+   * Shows form and manages update to state on changes.
+   * On submission:
+   * - calls signup function prop
+   * - redirects to /companies route
+   *
+   * Routes -> SignupForm -> Alert
+   * Routed as /signup
+   */
   const history = useHistory();
   const [formData, setFormData] = useState({
     username: "",

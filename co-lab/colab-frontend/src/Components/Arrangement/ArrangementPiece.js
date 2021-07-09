@@ -6,6 +6,7 @@ import crumple from "./audio/crumple.mp3";
 import Button from "react-bootstrap/Button";
 import { shadows } from "./shadows";
 
+// helper function to change the drop animation duraction
 function getStyle(style, snapshot) {
   if (!snapshot.isDropAnimating) {
     return style;
@@ -17,6 +18,8 @@ function getStyle(style, snapshot) {
     transitionDuration: `0.001s`
   };
 }
+
+// color codes for section tiles
 const colors = {
   Intro: "#ff6666",
   Verse: "#ff8c66",
@@ -62,6 +65,11 @@ const Clone = styled(Container)`
 `;
 
 function ArrangementPiece({ section, index, source, remove }) {
+  /**
+   * Draggable component for the arrangement side
+   * props: section, index (position in array), source (where it's coming from), remove(function to delete from array)
+   *
+   */
   const [playCrumple] = useSound(crumple);
   return (
     <Draggable key={section.dragId} draggableId={section.dragId} index={index}>

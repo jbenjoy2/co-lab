@@ -3,12 +3,18 @@ import { useSelector } from "react-redux";
 
 import UserAvatar from "./UserAvatar";
 import "./UserDetailsCard.css";
-function UserDetailsCard(props) {
+function UserDetailsCard() {
+  /**
+   * component to render the details of the current user, including their username, first/last name, email, and songcredits
+   *
+   *
+   */
+
   const currentUser = useSelector(st => st.user.currentUser);
   const { projects } = currentUser;
 
   return (
-    <div className={props.className}>
+    <div>
       <div className="UserDetailsCard">
         <div className="UserDetailsCard-card">
           <div className="UserDetailsCard-top ">

@@ -3,6 +3,11 @@ import ProjectCard from "./ProjectCard";
 import "./CardList.css";
 import { Link } from "react-router-dom";
 function CardList({ projects }) {
+  /**
+   * main component to render list of project cards
+   * props: projects (array of projects)
+   *
+   */
   if (!projects.length) return "No projects yet!";
   return (
     <div className="wrapper">

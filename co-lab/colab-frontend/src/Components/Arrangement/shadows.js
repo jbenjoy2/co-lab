@@ -1,3 +1,4 @@
+// object containing all color codes for text shadows
 export const shadows = {
   Intro: "#AD4545",
   Verse: "#C16A4D",

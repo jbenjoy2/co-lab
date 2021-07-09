@@ -4,9 +4,15 @@ import { useSelector } from "react-redux";
 import ColabAPI from "../../api/colabApi";
 import NewRequest from "./NewRequest";
 function Requests(props) {
+  /**
+   * wrapper component to hold all of the user requests
+   *
+   */
+
   const { currentUser } = useSelector(st => st.user);
   const [userRequests, setUserRequests] = useState([]);
 
+  // fetch all user requests on page load
   useEffect(() => {
     const getUserRequests = async user => {
       const res = await ColabAPI.getUserRequests(user);

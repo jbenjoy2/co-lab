@@ -8,7 +8,7 @@ import useModal from "../../hooks/useModal";
 import { useHistory } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 
-function ToolBar({ submit, projectId, length }) {
+function Buttons({ submit, projectId, length }) {
   const history = useHistory();
   const { isShowing, toggle } = useModal();
 
@@ -65,4 +65,4 @@ function ToolBar({ submit, projectId, length }) {
   );
 }
 
-export default ToolBar;
+export default Buttons;

@@ -13,6 +13,11 @@ const Container = styled.div`
 `;
 
 function SectionsSource({ sections }) {
+  /**
+   * Wrapper component for dropzone housing the sections source array
+   * props: sections array
+   *
+   */
   return (
     <Container>
       <Title>Sections</Title>

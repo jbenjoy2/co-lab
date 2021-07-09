@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-function UserSearchForm({ search, searchTerm }) {
+function UserSearchForm({ search }) {
+  /**
+   * user search form component to find users to collaborate with
+   * props: search(function to find users)
+   */
   const [term, setTerm] = useState("");
 
   const handleChange = e => {

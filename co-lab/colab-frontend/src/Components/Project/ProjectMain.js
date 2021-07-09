@@ -12,6 +12,11 @@ import { updateUserProjectApi, deleteUserProjectApi, leaveProjectApi } from "../
 import UserSearch from "./UserSearch";
 import { Helmet } from "react-helmet";
 function ProjectMain() {
+  /**
+   * main project component which renders the notes section and all tools associated with the project
+   * props: none
+   *
+   */
   const dispatch = useDispatch();
   const { projectId } = useParams();
   const [project, setProject] = useState({});
@@ -23,6 +28,8 @@ function ProjectMain() {
   const [errors, setErrors] = useState([]);
   const { currentUser } = useSelector(st => st.user);
   const [isRedirecting, setIsReidrecting] = useState(false);
+
+  // get project details on page load for given project Id and store in state
   useEffect(() => {
     const getProject = async id => {
       try {
@@ -32,6 +39,7 @@ function ProjectMain() {
         setCowriters(new Set(proj.contributors));
       } catch (error) {
         if (error.status) {
+          // redirect if an error occurs
           setIsReidrecting(true);
         }
       }
@@ -41,6 +49,7 @@ function ProjectMain() {
     getProject(projectId);
   }, [projectId]);
 
+  // string form of all cowriters on the project who are not the project owner
   const cowriterString = Array.from(cowriters)
     .filter(c => c !== project.owner)
     .join(", ");
@@ -54,11 +63,7 @@ function ProjectMain() {
     setEditing(false);
   };
 
-  const inputEl = useRef(null);
-  function handleFocus() {
-    inputEl.current.select();
-  }
-
+  // helper function to save project in database, local state, and redux store
   const saveProject = async (projectId, notes) => {
     setProject(project => ({ ...project, notes: notes }));
     try {
@@ -81,6 +86,7 @@ function ProjectMain() {
     }
   };
 
+  // helper function to delete project from database
   const deleteProject = async projectId => {
     try {
       const deleteProj = deleteUserProjectApi(projectId);
@@ -90,6 +96,7 @@ function ProjectMain() {
     }
   };
 
+  // helper function for user to leave project
   const leaveProject = async projectId => {
     try {
       const leaveProj = leaveProjectApi(projectId, currentUser.username);
@@ -98,7 +105,9 @@ function ProjectMain() {
       console.log(error);
     }
   };
+  // redirect to dashboard if unauthorized
   if (isRedirecting) return <Redirect to="/" />;
+  // render loading spinner until project loads
   if (loading) return <LoadingSpinner />;
 
   // console.log(cowriters.has(currentUser.username));

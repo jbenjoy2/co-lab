@@ -9,8 +9,9 @@ import collaborate from "./LandingPagePhotos/collaborate.png";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 function LandingPage() {
+  // landing page component
   return (
-    <div style={{ overflowY: "scroll", height: "95vh" }}>
+    <div style={{ height: "95vh" }}>
       <Helmet>
         <title>Colab - Home</title>
         <meta

@@ -10,6 +10,11 @@ import UserRequestCard from "./UserRequestCard";
 import { useSelector } from "react-redux";
 
 function UserSearch({ projectId, owner }) {
+  /**
+   * component to handle searching for user based on username to collaborate on project
+   * props- projectId, project Owner
+   *
+   */
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -17,6 +22,7 @@ function UserSearch({ projectId, owner }) {
   const [nullError, setNullError] = useState(false);
   const currUsername = useSelector(st => st.user.currentUser.username);
 
+  // helper function to find users in the database and render the results
   const findUsers = async username => {
     try {
       setSearchTerm(username);
@@ -36,6 +42,7 @@ function UserSearch({ projectId, owner }) {
     }
   };
 
+  // helper function to close the user search modal; reset the users array and search term and remove null errors, then toggle modal closed
   const handleModalClose = () => {
     setUsers([]);
     setSearchTerm("");
@@ -51,7 +58,7 @@ function UserSearch({ projectId, owner }) {
         </Modal.Header>
         <Modal.Body className="bg-dark">
           <div>
-            <UserSearchForm search={findUsers} searchTerm={searchTerm} />
+            <UserSearchForm search={findUsers} />
             {loading && <LoadingSpinner />}
             <div style={{ maxHeight: "50vh", overflowY: "scroll" }}>
               {users.length > 0 && (

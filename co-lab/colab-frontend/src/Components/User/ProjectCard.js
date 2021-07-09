@@ -3,7 +3,14 @@ import "./ProjectCard.css";
 import ColabAPI from "../../api/colabApi";
 import moment from "moment";
 function ProjectCard({ id, title, updatedAt, owner }) {
+  /**
+   * component to display project information on a clickable card
+   * props: project id, title, updatedAt, owner
+   */
+
   const [projOwner, setProjOwner] = useState("");
+
+  // retrieve project details on page load
   useEffect(() => {
     async function getProject(projId) {
       try {

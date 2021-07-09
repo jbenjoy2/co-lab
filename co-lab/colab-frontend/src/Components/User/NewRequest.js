@@ -7,11 +7,19 @@ import { addUserCowrite } from "../../actions/user";
 import { useDispatch } from "react-redux";
 import "./NewRequest.css";
 function NewRequest({ request }) {
+  /**
+   * component to render request card for pending collaboration requests
+   * props: request object of pending collabotation request
+   *
+   */
+
   const [accepted, setAccepted] = useState(null);
   const [color, setColor] = useState("");
   const [responded, setResponded] = useState(false);
   const [project, setProject] = useState({});
   const dispatch = useDispatch();
+
+  // retrieve basic project details for project corresponding to the pending request
   useEffect(() => {
     const getProject = async projId => {
       const res = await ColabAPI.getProjectDetails(projId);
@@ -20,6 +28,7 @@ function NewRequest({ request }) {
     getProject(request.projectId);
   }, [request.projectId]);
 
+  // helper function to accept the request and adjust some other corresponding state objects locally and in redux store
   const handleAccept = async () => {
     await ColabAPI.acceptRequest(request.requestID);
     setResponded(true);
@@ -27,6 +36,7 @@ function NewRequest({ request }) {
     dispatch(addUserCowrite(project));
     setColor("success");
   };
+  // helper function to rejectthe request and adjust some other corresponding state objects locally
   const handleReject = async () => {
     await ColabAPI.rejectRequest(request.requestID);
     setResponded(true);

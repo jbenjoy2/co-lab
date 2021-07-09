@@ -5,6 +5,10 @@ import "./UserOwner.css";
 import moment from "moment";
 
 function UserOwner() {
+  /**
+   * container to house cardlist of all projects for which user is the owner
+   *
+   */
   const { projects } = useSelector(st => st.user.currentUser);
   projects.sort((a, b) => moment(b.updatedAt) - moment(a.updatedAt));
   const owned = projects.filter(p => p.owner);

@@ -13,6 +13,11 @@ const Container = styled.div`
 `;
 
 function SectionsDest({ sections, remove }) {
+  /**
+   * Wrapper component for dropzone housing the Arrangements destination array
+   * props: sections array ,remove function
+   *
+   */
   return (
     <Container>
       <Title>Arrangement</Title>

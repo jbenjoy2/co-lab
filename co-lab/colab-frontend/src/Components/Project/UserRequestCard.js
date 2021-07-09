@@ -3,10 +3,17 @@ import ColabAPI from "../../api/colabApi";
 import { useSelector } from "react-redux";
 import "./UserRequestCard.css";
 function UserRequestCard({ user, projectId, owner }) {
+  /**
+   *
+   * card component to render results from user search to request user collaborations
+   * props: user object, projectId, project owner
+   */
   const { currentUser } = useSelector(st => st.user);
   const [requests, setRequests] = useState([]);
   const [status, setStatus] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
+
+  // get all requests associated with project on page load, and whenever the status variable changs (on a request button click)
   useEffect(() => {
     const getProjectRequests = async projectId => {
       const requests = await ColabAPI.getProjectRequests(projectId);
@@ -21,6 +28,7 @@ function UserRequestCard({ user, projectId, owner }) {
     getProjectRequests(projectId);
   }, [status, owner, user.username, projectId]);
 
+  // make a request on click and then rerender the request card
   const handleClick = async () => {
     const data = { project_id: +projectId, recipient: user.username };
     await ColabAPI.makeRequest(currentUser.username, data);

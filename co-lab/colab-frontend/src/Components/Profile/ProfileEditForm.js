@@ -3,6 +3,11 @@ import React, { useState } from "react";
 import Alert from "react-bootstrap/Alert";
 
 function ProfileEditForm({ user, updateUser }) {
+  /**
+   *
+   * form to edit user profile
+   * props: user object, updateUser(function to update user in database and redux store)
+   */
   const [current, setCurrent] = useState(user);
   const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({

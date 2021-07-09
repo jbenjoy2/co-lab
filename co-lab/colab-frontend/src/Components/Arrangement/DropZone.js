@@ -31,6 +31,13 @@ const TaskList = styled.div`
 `;
 
 function DropZone({ title, sections, remove }) {
+  /**
+   * main droppable component to handle logic for anywhere a draggable item can be dropped
+   * props- title, full sections array, remove(function to remove section from arrangements array)
+   *
+   */
+
+  // make dropping disabled if the droppable title is 'sections'
   const disabled = title === "sections";
 
   return (
@@ -46,7 +53,7 @@ function DropZone({ title, sections, remove }) {
           >
             {title === "sections" ? (
               sections.map((section, index) => (
-                <Section key={section.dragId} section={section} index={index} source={title} />
+                <Section key={section.dragId} section={section} index={index} />
               ))
             ) : sections.length > 0 ? (
               sections.map((section, index) => (

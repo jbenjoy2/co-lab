@@ -7,12 +7,13 @@ function getStyle(style, snapshot) {
     return style;
   }
 
-  // patching the existing style
+  // patching the existing style for dropping an item
   return {
     ...style,
     transitionDuration: `0.04s`
   };
 }
+// color code for draggable section tiles
 const colors = {
   Intro: "#ff6666",
   Verse: "#ff8c66",
@@ -61,7 +62,12 @@ const Clone = styled(Container)`
   }
 `;
 
-function Section({ section, index, source }) {
+function Section({ section, index }) {
+  /**
+   * compoment for draggable section tile that originates in the section container
+   * props: section object, index (position in array)
+   *
+   */
   return (
     <Draggable key={section.dragId} draggableId={section.dragId} index={index}>
       {(provided, snapshot) => (

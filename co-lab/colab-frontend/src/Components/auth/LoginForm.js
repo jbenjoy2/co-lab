@@ -3,6 +3,11 @@ import { useHistory, Redirect, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 function LoginForm({ login }) {
+  /*
+   * main component for logging in a user
+   * props- login (function to log user in on database and save to redux store)
+   *
+   */
   const currentUser = useSelector(st => st.user.currentUser);
 
   const INITIAL_DATA = {
@@ -17,13 +22,15 @@ function LoginForm({ login }) {
   if (currentUser.username) {
     return <Redirect to="/dashboard" />;
   }
+
+  // handle form submit by using login function and redirecting to dashboard on success, or adding errors on failure
   const handleSubmit = async e => {
     e.preventDefault();
     const result = await login(formData);
     if (result.success) {
       history.push("/dashboard");
     } else {
-      setFormErrors(result.errors);
+      setFormErrors([result.errors.data.error.message]);
     }
   };
 
@@ -31,6 +38,7 @@ function LoginForm({ login }) {
     const { name, value } = e.target;
     setFormData(data => ({ ...data, [name]: value }));
   };
+
   return (
     <div
       className="LoginForm"
@@ -77,6 +85,15 @@ function LoginForm({ login }) {
                   required
                 />
               </div>
+              {formErrors.length ? (
+                <div className="alert alert-danger" role="alert">
+                  {formErrors.map(error => (
+                    <p className="mb-0 small" key={error}>
+                      {error}
+                    </p>
+                  ))}
+                </div>
+              ) : null}
 
               <button className="btn btn-cancel btn-block text-light" onSubmit={handleSubmit}>
                 Login

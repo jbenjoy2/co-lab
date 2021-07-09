@@ -23,6 +23,12 @@ const Container = styled.div`
 `;
 
 function Arrangement() {
+  /**
+   * main arrangement components- no props
+   * renders main arrangement lab with drag and drop components
+   *
+   *
+   */
   const { projectId } = useParams();
   const [playUp] = useSound(up);
   const [playDown] = useSound(down);
@@ -33,11 +39,14 @@ function Arrangement() {
   const [errors, setErrors] = useState([]);
   const [isRedirecting, setIsRedirecting] = useState(false);
 
+  // get current project arrangement on page load for given projectId
   useEffect(() => {
     async function getProjectArrangement() {
       try {
         const arrangement = await ColabAPI.getArrangement(projectId);
+        // don't display the default arrangement piece with no section associated with it
         const usableArrangements = arrangement.filter(arr => arr.sectionId !== null);
+        // save in state and add a dragId
         setArrangements(
           usableArrangements.map(arr => ({
             ...arr,
@@ -46,6 +55,7 @@ function Arrangement() {
         );
       } catch (error) {
         if (error.status && error.status !== 404) {
+          // redirect to dashboard if an error occurs
           setIsRedirecting(true);
         }
       }
@@ -53,6 +63,7 @@ function Arrangement() {
     getProjectArrangement();
   }, [projectId]);
 
+  // get all sections from database on page load and save to state WITH dragId
   useEffect(() => {
     async function getSections() {
       const sections = await ColabAPI.getSections();
@@ -69,6 +80,7 @@ function Arrangement() {
     getSections();
   }, []);
 
+  // helper function to move arrangement pieces around within their own container and rearrange order
   const adjustOrder = (arr, startIdx, endIdx) => {
     const arrCopy = [...arr];
     const [removed] = arrCopy.splice(startIdx, 1);
@@ -77,6 +89,7 @@ function Arrangement() {
     return arrCopy;
   };
 
+  // helper function to copy section from the main sections container into the destination arrangement container
   const copyItem = (source, dest, droppableSource, droppableDest) => {
     const sourceCopy = Array.from(source);
     const destCopy = Array.from(dest);
@@ -88,16 +101,20 @@ function Arrangement() {
     return destCopy;
   };
 
+  // helper function to delete a section from the main arrangement container
   const removeItem = dragId => {
     const filtered = arrangements.filter(arr => arr.dragId !== dragId);
     setArrangements(filtered);
   };
+
+  // helper function to handle what happens when the drag operation ends
   const handleDragEnd = result => {
     const { destination, source } = result;
     if (!destination) {
       playWhoosh();
       return;
     }
+    // case by case based on the origin of the drag
     switch (source.droppableId) {
       case destination.droppableId:
         if (destination.droppableId === "sections") break;
@@ -114,6 +131,8 @@ function Arrangement() {
     }
     playUp();
   };
+
+  // helper function to add a position key to each arrangement object
   const addPosition = arrangements => {
     const data = Array.from(arrangements);
     const added = data.map((arr, idx) => {
@@ -132,6 +151,8 @@ function Arrangement() {
 
     return added;
   };
+
+  // helper function ito save current arrangement state in database when save button is pressed
   const handleSubmit = async projectId => {
     const withPosition = addPosition(arrangements);
 

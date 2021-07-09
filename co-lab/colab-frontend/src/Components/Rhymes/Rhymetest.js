@@ -8,11 +8,16 @@ import { Button } from "react-bootstrap";
 import ColabAPI from "../../api/colabApi";
 import "./RhymeTest.css";
 function Rhymetest(props) {
+  /**
+   * main component to get rhymes from database and render the results
+   *
+   */
   const [word, setWord] = useState("");
   const [rhymes, setRhymes] = useState([]);
   const [loading, setLoading] = useState(false);
   const { isShowing, toggle } = useModal();
 
+  // helper function to get rhymes from api
   const findRhymes = async word => {
     try {
       setWord(word);
@@ -25,6 +30,7 @@ function Rhymetest(props) {
     }
   };
 
+  // helper function to close modal: reset rhymes array and search word, then close modal
   const handleModalClose = () => {
     setRhymes([]);
     setWord("");

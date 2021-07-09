@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 function Navigation({ logout }) {
   const currentUser = useSelector(st => st.user.currentUser);
 
+  //helper function to render authenticated navbar
   function loggedInNav() {
     return (
       //   <ul className="navbar-nav ml-auto">
@@ -52,6 +53,7 @@ function Navigation({ logout }) {
       </>
     );
   }
+  // helper function to render unauthenticated nav
   function loggedOutNav() {
     return (
       <>

@@ -10,10 +10,15 @@ import { Helmet } from "react-helmet";
 import { useHistory } from "react-router-dom";
 import { addUserProjectApi } from "../../actions/user";
 function UserDashboard() {
+  /**
+   * main component to render the entire user dashboard page
+   * this component renders the 'new project' button, as well as all of the card lists, the user details card, and the requests panel
+   */
   const history = useHistory();
   const dispatch = useDispatch();
   const currentUser = useSelector(st => st.user.currentUser);
 
+  // helper function to create new project in api and in user redux store, then navigate to the new project
   const createProject = async (title, owner) => {
     const createUserProject = addUserProjectApi(title, owner);
     const res = await createUserProject(dispatch);

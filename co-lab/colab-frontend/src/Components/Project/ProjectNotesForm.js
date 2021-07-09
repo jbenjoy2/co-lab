@@ -5,6 +5,10 @@ import { useHistory } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import { useSelector } from "react-redux";
 function ProjectNotesForm(props) {
+  /**
+   * main project notes component where users can enter in notes/lyrics
+   * props- notes, projectId, save(function to save project), delete(function to delete project), leave(function to leave project)
+   */
   const { currentUser } = useSelector(st => st.user);
   const history = useHistory();
   const [notes, setNotes] = useState(props.notes || "");
@@ -31,14 +35,6 @@ function ProjectNotesForm(props) {
     toggle();
   };
   return (
-    // <Form>
-    //   <Form.Group controlId="exampleForm.ControlTextarea1">
-    //     <Form.Label className="text-center">
-    //       <h2 className="text-primary">Project Notes</h2>
-    //     </Form.Label>
-    //     <Form.Control as="textarea" rows={30} value={notes} />
-    //   </Form.Group>
-    // </Form>
     <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label style={{ color: "#f47b33" }} htmlFor="notes">

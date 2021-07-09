@@ -7,10 +7,16 @@ import _ from "lodash";
 import ColabAPI from "../../api/colabApi";
 
 function Quotetest() {
+  /**
+   * main component to get random quote
+   * props: none
+   *
+   */
   const [quote, setQuote] = useState({});
   const [loading, setLoading] = useState(false);
   const { isShowing, toggle } = useModal();
 
+  // helper function to get quote from API
   const getQuote = async () => {
     try {
       setQuote({});

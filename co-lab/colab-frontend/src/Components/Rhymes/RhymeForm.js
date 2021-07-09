@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
 function RhymeForm({ search }) {
+  /**
+   * form to type in search term to find rhymes
+   * props: search(function to find rhymes with given word)
+   */
   const [term, setTerm] = useState("");
 
   const handleChange = e => {
