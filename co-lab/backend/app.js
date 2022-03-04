@@ -8,6 +8,7 @@ const projectsRoutes = require("./routes/projects");
 const cowriteRoutes = require("./routes/cowrites");
 const arrangementsRoutes = require("./routes/arrangements");
 const sectionsRoutes = require("./routes/sections");
+const mailerRoutes = require("./routes/mailer");
 const { authenticateToken } = require("./Middleware/auth");
 const axios = require("axios");
 const { QUOTE_KEY } = require("./config");
@@ -24,11 +25,14 @@ app.use("/projects", projectsRoutes);
 app.use("/cowrites", cowriteRoutes);
 app.use("/arrangements", arrangementsRoutes);
 app.use("/sections", sectionsRoutes);
+app.use("/mailer", mailerRoutes);
 
 app.get("/rhymes/:word", async (req, res, next) => {
   const word = req.params.word;
   try {
-    const results = await axios.get(`https://api.datamuse.com/words?rel_rhy=${word}&max=100`);
+    const results = await axios.get(
+      `https://api.datamuse.com/words?rel_rhy=${word}&max=100`
+    );
     const foundRhymes = results.data;
     return res.json({ foundRhymes });
   } catch (error) {
@@ -37,7 +41,9 @@ app.get("/rhymes/:word", async (req, res, next) => {
 });
 app.get("/quote", async (req, res, next) => {
   try {
-    const results = await axios.get(`https://zenquotes.io/api/random/${QUOTE_KEY}`);
+    const results = await axios.get(
+      `https://zenquotes.io/api/random/${QUOTE_KEY}`
+    );
     const foundQuote = results.data[0];
     return res.json({ foundQuote });
   } catch (error) {
@@ -51,13 +57,14 @@ app.use((req, res, next) => {
 });
 // general error handler
 app.use((err, req, res, next) => {
-  if (process.env.NODE_ENV !== "test") console.error(err.stack);
+  // console.log("node env", process.env.NODE_ENV);
+  if (process.env.NODE_ENV !== "test") console.log(err.stack);
   const status = err.status || 500;
   return res.status(status).json({
     error: {
       message: err.message,
-      status: status
-    }
+      status: status,
+    },
   });
 });
 module.exports = app;

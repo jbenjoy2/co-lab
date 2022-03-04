@@ -2,7 +2,7 @@
 \echo 'Delete and recreate colab db?'
 \prompt 'Return for yes or control-C to cancel > ' foo
 
-DROP DATABASE colab;
+DROP DATABASE IF EXISTS colab;
 CREATE DATABASE colab;
 \connect colab
 
@@ -12,7 +12,7 @@ CREATE DATABASE colab;
 \echo 'Delete and recreate colab_test db?'
 \prompt 'Return for yes or control-C to cancel > ' foo
 
-DROP DATABASE colab_test;
+DROP DATABASE IF EXISTS colab_test;
 CREATE DATABASE colab_test;
 \connect colab_test
 

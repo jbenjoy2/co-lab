@@ -11,7 +11,9 @@ const PORT = +process.env.PORT || 3001;
 
 // Use dev database or via env var, production database
 function getDatabaseUri() {
-  return process.env.NODE_ENV === "test" ? "colab_test" : process.env.DATABASE_URL || "colab";
+  return process.env.NODE_ENV === "test"
+    ? "colab_test"
+    : process.env.DATABASE_URL || "colab";
 }
 
 const BCRYPT_WORK_FACTOR = process.env.NODE_ENV === "test" ? 1 : 13;
@@ -28,5 +30,5 @@ module.exports = {
   PORT,
   BCRYPT_WORK_FACTOR,
   getDatabaseUri,
-  QUOTE_KEY
+  QUOTE_KEY,
 };
